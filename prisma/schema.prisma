@@ -1,0 +1,91 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  username       String    
+  email          String    @unique
+  password       String
+  profilePhoto  String?
+  role               UserRole
+  needPasswordChange Boolean    @default(true)
+    status             UserStatus @default(ACTIVE)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  admin              Admin?
+  flatRequests   FlatRequest[]
+  posts          Flat[]
+  @@map("user")
+}
+model Admin {
+  id            String   @id @default(uuid())
+  username          String
+  email         String   @unique
+  profilePhoto  String?
+  contactNumber String?
+  isDeleted     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [email], references: [email])
+
+  @@map("admins")
+}
+model Flat {
+  id             Int       @id @default(autoincrement())
+  location       String
+  description    String
+  rentAmount     Float
+  bedrooms       Int
+  amenities      String[]
+  photos         String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  ownerId        Int
+
+  user          User      @relation(fields: [ownerId], references: [id])
+  flatRequest       FlatRequest[]
+}
+
+model FlatRequest {
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  flatId         Int
+  status         RequestStatus @default(PENDING)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  user           User      @relation( fields: [userId], references: [id])
+  flat           Flat      @relation(fields: [flatId], references: [id])
+}
+
+
+
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  SELLER
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+  DELETED
+}
