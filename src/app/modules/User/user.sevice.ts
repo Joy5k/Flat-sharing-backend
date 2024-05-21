@@ -53,6 +53,7 @@ const createUser = async (req: Request): Promise<User> => {
     const userData = {
         email: req.body.user.email,
         username: req.body.user.username,
+        profilePhoto: req?.body.user.profilePhoto,
         password: hashedPassword,
         role: UserRole.USER
     }
