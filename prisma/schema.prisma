@@ -10,7 +10,7 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
+  id             String       @id  @default(uuid())
   username       String    
   email          String    @unique
   password       String
@@ -23,10 +23,10 @@ model User {
   admin              Admin?
   flatRequests   FlatRequest[]
   posts          Flat[]
-  @@map("user")
+
 }
 model Admin {
-  id            String   @id @default(uuid())
+  id             String       @id  @default(uuid())
   username          String
   email         String   @unique
   profilePhoto  String?
@@ -37,10 +37,9 @@ model Admin {
 
   user User @relation(fields: [email], references: [email])
 
-  @@map("admins")
 }
 model Flat {
-  id             Int       @id @default(autoincrement())
+  id             String       @id  @default(uuid())
   location       String
   description    String
   rentAmount     Float
@@ -49,16 +48,16 @@ model Flat {
   photos         String[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  ownerId        Int
+  ownerId        String
 
   user          User      @relation(fields: [ownerId], references: [id])
   flatRequest       FlatRequest[]
 }
 
 model FlatRequest {
-  id             Int       @id @default(autoincrement())
-  userId         Int
-  flatId         Int
+  id              String       @id  @default(uuid())
+  userId         String
+  flatId         String
   status         RequestStatus @default(PENDING)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt

@@ -4,6 +4,7 @@ import { AdminRoutes } from '../modules/Admin/admin.routes';
 import { AuthRoutes } from '../modules/Auth/auth.routes';
 
 import { MetaRoutes } from '../modules/Meta/meta.routes';
+import { FLatRoutes } from '../modules/Flat/flat.routes';
 
 const router = express.Router();
 
@@ -19,6 +20,10 @@ const moduleRoutes = [
     {
         path: '/auth',
         route: AuthRoutes
+    },
+    {
+        path: '/flat',
+        route: FLatRoutes
     },
    
     {

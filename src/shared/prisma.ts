@@ -22,7 +22,7 @@ const prisma = new PrismaClient({
 })
 
 prisma.$on('query', (e) => {
-console.log(e);
+// console.log(e);
 })
 
 
