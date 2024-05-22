@@ -22,21 +22,51 @@ const storage = multer.diskStorage({
 const upload: Multer = multer({ storage: storage }); // Define the type for upload object
 
 const uploadToCloudinary = async (files: IFile[]): Promise<ICloudinaryResponse[]> => {
+    console.log(files);
     const uploadPromises = files.map((file) => {
         return new Promise<ICloudinaryResponse>((resolve, reject) => {
             cloudinary.uploader.upload(file.path, (error: Error, result: ICloudinaryResponse) => {
-                fs.unlinkSync(file.path);
+              
+            //     // deleting multiple images from uploads folder
+            //     if (!!file.path &&fs.existsSync(file.path)) {
+            //    return  fs.unlinkSync(file.path);
+            //  }
+                   
+               
+
+
                 if (error) {
                     reject(error);
                 } else {
                     resolve(result);
-                    console.log(result,"<------------------------------------");
+                   
+                    // console.log(result,"<------------------------------------");
                 }
             });
         });
     });
+    
+    try {
+        // Wait for all uploads to complete
+        const results = await Promise.all(uploadPromises);
 
-    return Promise.all(uploadPromises);
+        // Once all uploads are done, delete the files
+        // files.forEach((file) => {
+        //     if (!!file.path && fs.existsSync(file.path) && !(fs.unlinkSync(file.path))) {
+        //         console.log('Deleting file:', file.path);
+        //         fs.unlinkSync(file.path);
+        //         console.log('File deleted:', file.path);
+        //     } else {
+        //         console.log('File not found:', file.path);
+        //     }
+        // });
+
+        return results;
+    } catch (error) {
+        // Handle errors here
+        console.error('Error uploading files:', error);
+        throw error;
+    }
 };
 
 export const multiFileUploader = {

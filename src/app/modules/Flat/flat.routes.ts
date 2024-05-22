@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
   "/create-flat",
-  multiFileUploader.upload.array("files", 3),
+  multiFileUploader.upload.array("files", 10),
   async (req: Request, res: Response, next: NextFunction) => {
     const files = req.files as any;
     await multiFileUploader.uploadToCloudinary(files);

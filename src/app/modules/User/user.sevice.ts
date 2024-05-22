@@ -45,7 +45,7 @@ const createUser = async (req: Request): Promise<User> => {
 
   if (file) {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-    console.log(uploadToCloudinary, "this is result");
+ 
     req.body.user.profilePhoto = uploadToCloudinary?.secure_url;
   }
 
