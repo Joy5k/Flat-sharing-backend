@@ -6,6 +6,7 @@ import { FlatServices } from "./flat.service";
 import { TFlat } from "./flat.interface";
 import pick from "../../../shared/pick";
 import { flatFilterableFields } from "./flat.constant";
+import { IAuthUser } from "../../interfaces/common";
 
 const createFlat = catchAsync(async (req: Request, res: Response) => {
     const result = await FlatServices.createFlatIntoDB(req);
@@ -16,7 +17,7 @@ const createFlat = catchAsync(async (req: Request, res: Response) => {
         data: result
     })
 })
-const getFlats = catchAsync(async (req: Request, res: Response) => {
+const getFlats = catchAsync(async (req: Request , res: Response) => {
     const user=req.user
     const filters = pick(req.query, flatFilterableFields)
     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);

@@ -16,7 +16,7 @@ router.get(
 
 router.get(
   "/me",
-  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN,UserRole.USER,UserRole.SELLER),
   userController.getMyProfile
 );
 
@@ -48,7 +48,7 @@ router.patch(
 
 router.patch(
   "/update-my-profile",
-  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN,UserRole.USER,UserRole.SELLER),
   fileUploader.upload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);

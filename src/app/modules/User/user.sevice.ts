@@ -158,16 +158,18 @@ const changeProfileStatus = async (id: any, status: UserRole) => {
 const getMyProfile = async (user: IAuthUser) => {
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
-      email: user?.email,
+      id: user?.userId,
       status: UserStatus.ACTIVE,
     },
     select: {
       id: true,
       email: true,
+      username: true,
+      profilePhoto:true,
       needPasswordChange: true,
       role: true,
       status: true,
-    },
+    }
   });
 
   let profileInfo;
@@ -175,19 +177,40 @@ const getMyProfile = async (user: IAuthUser) => {
   if (userInfo.role === UserRole.SUPER_ADMIN) {
     profileInfo = await prisma.admin.findUnique({
       where: {
-        email: userInfo.email,
+        id: userInfo.id,
+      },
+      select: {
+        id: true,
+        email: true,
+        username:true,
+        profilePhoto:true,
       },
     });
   } else if (userInfo.role === UserRole.ADMIN) {
     profileInfo = await prisma.admin.findUnique({
       where: {
-        email: userInfo.email,
+        id: userInfo.id,
+      },
+      select: {
+        id: true,
+        email: true,
+        username:true,
+        profilePhoto:true,
       },
     });
   } else if (userInfo.role === UserRole.USER) {
     profileInfo = await prisma.user.findUnique({
       where: {
-        email: userInfo.email,
+        id: userInfo.id,
+      },
+      select: {
+        id: true,
+        email: true,
+        username:true,
+        needPasswordChange: true,
+        profilePhoto:true,
+        role: true,
+        status: true,
       },
     });
   }
