@@ -3,6 +3,7 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { FlatShareRequestServices } from "./flatShareRequest.services";
+import { JwtPayload } from "jsonwebtoken";
 
 const createFlatRequest = catchAsync(async (req: Request, res: Response) => {
   const { flatId } = req.body;
