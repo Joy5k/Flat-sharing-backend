@@ -5,6 +5,7 @@ import { AuthRoutes } from '../modules/Auth/auth.routes';
 
 import { MetaRoutes } from '../modules/Meta/meta.routes';
 import { FLatRoutes } from '../modules/Flat/flat.routes';
+import { FlatShareRequestRoutes } from '../modules/FlatShareRequests/flatShareRequest.routes';
 
 const router = express.Router();
 
@@ -24,6 +25,11 @@ const moduleRoutes = [
     {
         path: '/flat',
         route: FLatRoutes
+    },
+   
+    {
+        path: '/flat-share-request',
+        route: FlatShareRequestRoutes
     },
    
     {
