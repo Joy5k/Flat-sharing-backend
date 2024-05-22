@@ -136,9 +136,23 @@ const getFlatsFromDB = async (
   };
 };
 
+const getMyFlatsFromDB = async (userId: string) => {
+  const result = await prisma.flat.findMany({
+    where: {
+      userId
+    }
+  })
+  return result
+}
 
+
+const updateFlatDataIntoDB = async (id: string, payload: any) => {
+  
+}
 
 export const FlatServices = {
   createFlatIntoDB,
   getFlatsFromDB,
+  getMyFlatsFromDB,
+  updateFlatDataIntoDB
 };

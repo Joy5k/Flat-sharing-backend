@@ -23,5 +23,14 @@ router.get('/get-all-flats',
   auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
   FlatController.getFlats
 )
+router.get('/get-my-flats',
+  auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
+  FlatController.getFlats
+)
+
+router.patch("/updateFLat",
+  auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
+  FlatController.updateFlat
+)
 
 export const FLatRoutes = router;

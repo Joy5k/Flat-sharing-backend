@@ -3,10 +3,8 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { Request, Response } from "express";
 import { FlatServices } from "./flat.service";
-import { TFlat } from "./flat.interface";
 import pick from "../../../shared/pick";
 import { flatFilterableFields } from "./flat.constant";
-import { IAuthUser } from "../../interfaces/common";
 
 const createFlat = catchAsync(async (req: Request, res: Response) => {
     const result = await FlatServices.createFlatIntoDB(req);
@@ -25,13 +23,40 @@ const getFlats = catchAsync(async (req: Request , res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Appointment retrieval successfully',
+        message: 'Flats retrieval successfully',
         meta: result.meta,
         data: result.data,
     });
 })
+
+const getMyFlats = catchAsync(async (req: Request, res: Response) => {
+    const { userId } = req.user
+    const result = await FlatServices.getMyFlatsFromDB(userId);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Flats retrieval successfully',
+        data: result,
+    });
+})
+
+
+const updateFlat = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await FlatServices.updateFlatDataIntoDB(id, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "FLat data updated!",
+        data: result
+    })
+})
+
 export const FlatController = {
     createFlat,
-    getFlats
+    getFlats,
+    getMyFlats,
+    updateFlat
 
 }
