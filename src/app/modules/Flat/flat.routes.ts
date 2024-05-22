@@ -1,18 +1,18 @@
-import { UserRole } from "@prisma/client";
 import express, { NextFunction, Request, Response } from "express";
 import { FlatController } from "./flat.controller";
 import { flatValidationSchemas } from "./flat.validation";
 import { multiFileUploader } from "../../../helpers/multiFileUploader";
-import { IFile } from "../../interfaces/file";
+import { ICloudinaryResponse, IFile } from "../../interfaces/file";
+import auth from "../../middlewares/auth";
+import { UserRole } from "@prisma/client";
 
 const router = express.Router();
 
 router.post(
   "/create-flat",
+  auth(UserRole.ADMIN,UserRole.USER,UserRole.SELLER,UserRole.SUPER_ADMIN),
   multiFileUploader.upload.array("files", 10),
   async (req: Request, res: Response, next: NextFunction) => {
-    const files = req.files as any;
-    await multiFileUploader.uploadToCloudinary(files);
     req.body = flatValidationSchemas.createFlatSchema.parse(
       JSON.parse(req.body.data)
     );

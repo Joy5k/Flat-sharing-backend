@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 const upload: Multer = multer({ storage: storage }); // Define the type for upload object
 
 const uploadToCloudinary = async (files: IFile[]): Promise<ICloudinaryResponse[]> => {
-    console.log(files);
+    // console.log(files);
     const uploadPromises = files.map((file) => {
         return new Promise<ICloudinaryResponse>((resolve, reject) => {
             cloudinary.uploader.upload(file.path, (error: Error, result: ICloudinaryResponse) => {

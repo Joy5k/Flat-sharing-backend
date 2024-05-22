@@ -22,7 +22,7 @@ model User {
   updatedAt      DateTime  @updatedAt
   admin              Admin?
   flatRequests   FlatRequest[]
-  posts          Flat[]
+  flat          Flat[]
 
 }
 model Admin {
@@ -45,15 +45,20 @@ model Flat {
   rentAmount     Float
   bedrooms       Int
   amenities      String[]
-  photos         String[]
+  photos      Photo[] 
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  ownerId        String
+  userId        String
 
-  user          User      @relation(fields: [ownerId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
   flatRequest       FlatRequest[]
 }
-
+model Photo {
+  id      String    @id @default(uuid())
+  imageUrl String
+  flatId  String
+  flat    Flat   @relation(fields: [flatId], references: [id])
+}
 model FlatRequest {
   id              String       @id  @default(uuid())
   userId         String

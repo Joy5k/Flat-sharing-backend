@@ -8,7 +8,7 @@ const createFlatSchema = z.object({
   description: z.string({
     required_error: "Description is required!",
   }),
-  rent: z.number({
+  rentAmount: z.number({
     required_error: "Rent is required!",
   }),
   bedrooms: z.number({
