@@ -20,6 +20,7 @@ router.post(
     auth(
         UserRole.SUPER_ADMIN,
         UserRole.ADMIN,
+        UserRole.USER
     ),
     AuthController.changePassword
 );

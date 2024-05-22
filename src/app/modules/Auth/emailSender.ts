@@ -5,6 +5,7 @@ const emailSender = async (
     email: string,
     html: string
 ) => {
+    console.log(config.emailSender.app_pass,"password")
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -13,20 +14,19 @@ const emailSender = async (
             user: config.emailSender.email,
             pass: config.emailSender.app_pass,
         },
+       
         tls: {
             rejectUnauthorized: false
         }
     });
-
     const info = await transporter.sendMail({
-        from: '"PH Health Care" <fahimfiroz.ph@gmail.com>', // sender address
+        from: '"Flat Share" <mmehedihasanjoyv@gmail.com> ', // sender address
         to: email, // list of receivers
-        subject: "Reset Password Link", // Subject line
+        subject: "Change Password Link", // Subject line
         //text: "Hello world?", // plain text body
         html, // html body
     });
-
-    //console.log("Message sent: %s", info.messageId);
+    console.log("Message sent: %s", info.messageId);
 }
 
 export default emailSender;

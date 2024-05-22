@@ -35,14 +35,11 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
         success: true,
         message: "Access token genereated successfully!",
         data: result
-        // data: {
-        //     accessToken: result.accessToken,
-        //     needPasswordChange: result.needPasswordChange
-        // }
+     
     })
 });
 
-const changePassword = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+const changePassword = catchAsync(async (req: Request, res: Response) => {
     const user = req.user;
 
     const result = await AuthServices.changePassword(user, req.body);
