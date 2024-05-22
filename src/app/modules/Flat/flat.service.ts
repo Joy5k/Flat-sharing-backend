@@ -176,6 +176,25 @@ const updateFlatDataIntoDB = async (id: string, payload: any) => {
   })
   return result
 }
+const updateMyFlatDataIntoDB = async (id: string,userId:string, payload: any) => {
+ 
+ await prisma.flat.findFirstOrThrow({
+    where: {
+      id,
+      userId
+    }
+  })
+
+  const result = await prisma.flat.update({
+    where: {
+      id,
+      userId
+
+    },
+    data: payload
+  })
+  return result
+}
 
 const deleteFlatFromDB = async (id: string) => {
 
@@ -204,5 +223,6 @@ export const FlatServices = {
   getMyFlatsFromDB,
   getSingleFlatFromDB,
   updateFlatDataIntoDB,
+  updateMyFlatDataIntoDB,
   deleteFlatFromDB
 };

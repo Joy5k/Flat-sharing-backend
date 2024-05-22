@@ -34,9 +34,15 @@ router.get("/getSingleFlat/:id",
 )
 
 router.patch("/updateFLat/:id",
-  auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
   FlatController.updateFlat
 )
+
+router.patch("/updateMyFLat/:id",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN,UserRole.USER,UserRole.SELLER),
+  FlatController.updateMyFlat
+)
+
 router.delete("/deleteFlat/:id",
   auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
   FlatController.deleteFlat
