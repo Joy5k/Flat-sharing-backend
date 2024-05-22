@@ -45,7 +45,7 @@ const createUser = async (req: Request): Promise<User> => {
 
   if (file) {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
- 
+
     req.body.user.profilePhoto = uploadToCloudinary?.secure_url;
   }
 
@@ -139,34 +139,43 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
 };
 
 const changeUserRole = async (id: any, status: UserRole) => {
- const result= await prisma.user.findUniqueOrThrow({
+  const result = await prisma.user.findUniqueOrThrow({
     where: {
       id,
-   },
-   select: {
-     username: true,
-     email:true
-   }
+    },
+    select: {
+      username: true,
+      email: true,
+      profilePhoto: true,
+    },
   });
-console.log(result);
-  return await prisma.$transaction(async transactionClient => {
+  console.log(result);
+  return await prisma.$transaction(async (transactionClient) => {
     const updateUser = await transactionClient.user.update({
-        where: {
-            id,
+      where: {
+        id,
       },
       data: status,
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        profilePhoto: true,
+        role: true,
+        needPasswordChange: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     await transactionClient.admin.create({
-       data:result
+      data: result,
     });
 
     return updateUser;
-});
-}
-
-
-
+  });
+};
 
 const changeProfileStatus = async (id: any, status: UserRole) => {
   await prisma.user.findUniqueOrThrow({
@@ -195,11 +204,11 @@ const getMyProfile = async (user: IAuthUser) => {
       id: true,
       email: true,
       username: true,
-      profilePhoto:true,
+      profilePhoto: true,
       needPasswordChange: true,
       role: true,
       status: true,
-    }
+    },
   });
 
   let profileInfo;
@@ -212,8 +221,8 @@ const getMyProfile = async (user: IAuthUser) => {
       select: {
         id: true,
         email: true,
-        username:true,
-        profilePhoto:true,
+        username: true,
+        profilePhoto: true,
       },
     });
   } else if (userInfo.role === UserRole.ADMIN) {
@@ -224,8 +233,8 @@ const getMyProfile = async (user: IAuthUser) => {
       select: {
         id: true,
         email: true,
-        username:true,
-        profilePhoto:true,
+        username: true,
+        profilePhoto: true,
       },
     });
   } else if (userInfo.role === UserRole.USER) {
@@ -236,9 +245,9 @@ const getMyProfile = async (user: IAuthUser) => {
       select: {
         id: true,
         email: true,
-        username:true,
+        username: true,
         needPasswordChange: true,
-        profilePhoto:true,
+        profilePhoto: true,
         role: true,
         status: true,
       },
@@ -290,5 +299,5 @@ export const userService = {
   changeProfileStatus,
   getMyProfile,
   updateMyProfile,
-  changeUserRole
+  changeUserRole,
 };
