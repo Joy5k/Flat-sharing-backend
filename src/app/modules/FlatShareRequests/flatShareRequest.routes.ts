@@ -13,5 +13,9 @@ router.get('/getAllFlatRequest',
 auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
 FlatShareRequestController.getAllFlatRequestData
 )
+router.get('/getSingleFlatRequest/:id',
+auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
+FlatShareRequestController.getSingleFlatRequestData
+)
 
 export const FlatShareRequestRoutes = router;

@@ -36,7 +36,19 @@ const getAllFlatRequestDataFromDB = async (userId:string) => {
     return result
 }
 
+const getSingleFlatRequestDataFromDB = async (flatId: string) => {
+    const result = await prisma.flatRequest.findFirstOrThrow({
+        where: {
+            flatId
+        }, include: {
+            flat: true
+        }
+    })
+    return result
+}
+
 export const FlatShareRequestServices = {
     createFlatRequestIntoDB,
-    getAllFlatRequestDataFromDB
+    getAllFlatRequestDataFromDB,
+    getSingleFlatRequestDataFromDB
 }
