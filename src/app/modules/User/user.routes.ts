@@ -5,6 +5,7 @@ import { UserRole } from "@prisma/client";
 import { fileUploader } from "../../../helpers/fileUploader";
 import { userValidation } from "./user.validation";
 import validateRequest from "../../middlewares/validateRequest";
+import { AdminRoutes } from './../Admin/admin.routes';
 
 const router = express.Router();
 
@@ -40,11 +41,19 @@ router.post(
 );
 
 router.patch(
+  "/editProfile",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN,UserRole.USER,UserRole.SELLER),
+  validateRequest(userValidation.editProfile),
+  userController.editProfile
+);
+
+router.patch(
   "/:id/status",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
   validateRequest(userValidation.updateStatus),
   userController.changeProfileStatus
 );
+
 router.patch(
   "/:userId/role",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),

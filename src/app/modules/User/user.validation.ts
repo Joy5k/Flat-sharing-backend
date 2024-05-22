@@ -48,10 +48,17 @@ const updateRole = z.object({
     role: z.enum([UserRole.ADMIN,UserRole.USER,UserRole.SELLER]),
   }),
 });
+const editProfile = z.object({
+  body: z.object({
+    username: z.string().optional(),
+    email:z.string().optional()
+  }),
+});
 
 export const userValidation = {
   createAdmin,
   createUser,
   updateStatus,
-  updateRole
+  updateRole,
+  editProfile
 };

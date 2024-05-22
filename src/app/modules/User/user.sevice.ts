@@ -138,6 +138,79 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
   };
 };
 
+const editProfileIntoDB = async (email: string, payload: {username?:string,email?:string}) => {
+  console.log(email);
+  
+ const isExistInUser= await prisma.user.findUniqueOrThrow({
+    where: {
+      email,
+    },
+    select: {
+      username: true,
+      email: true,
+      profilePhoto: true,
+    },
+ });
+  
+ const isExistInAdmin = await prisma.admin.findUnique({
+  where: {
+    email
+  }
+})
+  
+  if (isExistInUser && !isExistInAdmin) {
+    const updateUser = await prisma.user.update({
+      where: {
+        email,
+      },
+      data: payload,
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        profilePhoto: true,
+        role: true,
+        needPasswordChange: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return updateUser
+  }
+  if (!!isExistInAdmin && !!isExistInUser) {
+    return await prisma.$transaction(async (transactionClient) => {
+      const updateUser = await transactionClient.user.update({
+        where: {
+          email,
+        },
+        data: payload,
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          profilePhoto: true,
+          role: true,
+          needPasswordChange: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+  
+    
+      await transactionClient.admin.update({
+        where: {
+          email
+        },
+        data:payload
+      });
+  
+      return updateUser;
+    });
+  }
+
+};
 const changeUserRole = async (id: any, status: UserRole) => {
   const result = await prisma.user.findUniqueOrThrow({
     where: {
@@ -300,4 +373,5 @@ export const userService = {
   getMyProfile,
   updateMyProfile,
   changeUserRole,
+  editProfileIntoDB
 };
