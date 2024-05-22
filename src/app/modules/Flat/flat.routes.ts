@@ -32,5 +32,9 @@ router.patch("/updateFLat/:id",
   auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
   FlatController.updateFlat
 )
+router.delete("/deleteFlat/:id",
+  auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
+  FlatController.deleteFlat
+)
 
 export const FLatRoutes = router;

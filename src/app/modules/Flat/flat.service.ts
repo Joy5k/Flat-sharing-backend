@@ -157,9 +157,31 @@ const updateFlatDataIntoDB = async (id: string, payload: any) => {
   return result
 }
 
+const deleteFlatFromDB = async (id: string) => {
+
+  return await prisma.$transaction(async transactionClient => {
+    const deleteFlat = await transactionClient.photo.deleteMany({
+        where: {
+            flatId:id,
+        },
+    });
+
+    await transactionClient.flat.delete({
+        where: {
+          id
+        },
+    });
+
+    return deleteFlat;
+});
+
+}
+
+
 export const FlatServices = {
   createFlatIntoDB,
   getFlatsFromDB,
   getMyFlatsFromDB,
-  updateFlatDataIntoDB
+  updateFlatDataIntoDB,
+  deleteFlatFromDB
 };
