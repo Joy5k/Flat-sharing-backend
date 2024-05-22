@@ -147,7 +147,14 @@ const getMyFlatsFromDB = async (userId: string) => {
 
 
 const updateFlatDataIntoDB = async (id: string, payload: any) => {
-  
+  console.log(payload,"The flat data was updated");
+  const result = await prisma.flat.update({
+    where: {
+      id
+    },
+    data: payload
+  })
+  return result
 }
 
 export const FlatServices = {
