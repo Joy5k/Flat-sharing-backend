@@ -28,6 +28,11 @@ router.get('/get-my-flats',
   FlatController.getFlats
 )
 
+router.get("/getSingleFlat/:id",
+  auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
+  FlatController.getSingleFlat
+)
+
 router.patch("/updateFLat/:id",
   auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
   FlatController.updateFlat

@@ -9,7 +9,7 @@ import { paginationHelper } from "../../../helpers/paginationHelper";
 import { Prisma, UserRole } from "@prisma/client";
 
 const createFlatIntoDB = async (req: Request) => {
-  const user = req.user as any;
+  const user = req.user
 
   const files = req.files as IFile[];
   let flatPhotos: { imageUrl: string }[] = [];
@@ -29,7 +29,6 @@ const createFlatIntoDB = async (req: Request) => {
     }
   }
   const flatData = req.body;
-  console.log(flatData, "the flat data");
 
   const result = await prisma.flat.create({
     data: {
@@ -53,7 +52,6 @@ const getFlatsFromDB = async (
   filters:any,
   options: IPaginationOptions & { location?: string; priceMin?: number; priceMax?: number; bedrooms?: number }
 ) => {
-  console.log(options,"--------------------------------",filters);
   const { limit,page, skip } = paginationHelper.calculatePagination(options);
   const { location, priceMin, priceMax, bedrooms } = filters;
   
@@ -145,6 +143,28 @@ const getMyFlatsFromDB = async (userId: string) => {
   return result
 }
 
+const getSingleFlatFromDB = async (id: string) => {
+   
+
+  const result = await prisma.flat.findFirstOrThrow({
+    where: {
+      id
+    },
+    select: {
+      id: true,
+      location: true,
+      description: true,
+      photos: true,
+      rentAmount: true,
+      bedrooms: true,
+      amenities: true,
+      userId: true,
+      createdAt: true,
+      updatedAt: true
+    }
+  })
+  return result
+}
 
 const updateFlatDataIntoDB = async (id: string, payload: any) => {
   console.log(payload,"The flat data was updated");
@@ -182,6 +202,7 @@ export const FlatServices = {
   createFlatIntoDB,
   getFlatsFromDB,
   getMyFlatsFromDB,
+  getSingleFlatFromDB,
   updateFlatDataIntoDB,
   deleteFlatFromDB
 };
