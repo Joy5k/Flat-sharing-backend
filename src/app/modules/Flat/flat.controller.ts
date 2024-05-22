@@ -16,7 +16,7 @@ const createFlat = catchAsync(async (req: Request, res: Response) => {
     })
 })
 const getFlats = catchAsync(async (req: Request , res: Response) => {
-    const user=req.user
+    const user=req.user as any
     const filters = pick(req.query, flatFilterableFields)
     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
     const result = await FlatServices.getFlatsFromDB(user,filters,options);
