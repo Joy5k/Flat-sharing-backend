@@ -19,5 +19,9 @@ router.post(
     return FlatController.createFlat(req, res, next);
   }
 );
+router.get('/get-all-flats',
+  auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
+  FlatController.getFlats
+)
 
 export const FLatRoutes = router;
