@@ -25,6 +25,18 @@ const createFlatRequestIntoDB = async (payload: TFlatShareRequest) => {
     return result
 }
 
+const getAllFlatRequestDataFromDB = async (userId:string) => {
+    const result = await prisma.flatRequest.findMany({
+        where: {
+            userId
+        }, include: {
+            flat: true
+        }
+    })
+    return result
+}
+
 export const FlatShareRequestServices = {
-    createFlatRequestIntoDB
+    createFlatRequestIntoDB,
+    getAllFlatRequestDataFromDB
 }

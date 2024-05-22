@@ -20,7 +20,20 @@ const createFlatRequest = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const getAllFlatRequestData = catchAsync(async (req:Request,res:Response) => {
+    const {userId}=req.user
+    const result = await FlatShareRequestServices.getAllFlatRequestDataFromDB(userId)
+    
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Flat Share Request retrieved successfully',
+        data: result
+    })
+
+})
 
 export const FlatShareRequestController = {
-    createFlatRequest
+    createFlatRequest,
+    getAllFlatRequestData
 }
