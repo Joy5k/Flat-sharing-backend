@@ -138,8 +138,38 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
   };
 };
 
+const changeUserRole = async (id: any, status: UserRole) => {
+ const result= await prisma.user.findUniqueOrThrow({
+    where: {
+      id,
+   },
+   select: {
+     username: true,
+     email:true
+   }
+  });
+console.log(result);
+  return await prisma.$transaction(async transactionClient => {
+    const updateUser = await transactionClient.user.update({
+        where: {
+            id,
+      },
+      data: status,
+    });
+
+    await transactionClient.admin.create({
+       data:result
+    });
+
+    return updateUser;
+});
+}
+
+
+
+
 const changeProfileStatus = async (id: any, status: UserRole) => {
-  const userData = await prisma.user.findUniqueOrThrow({
+  await prisma.user.findUniqueOrThrow({
     where: {
       id,
     },
@@ -260,4 +290,5 @@ export const userService = {
   changeProfileStatus,
   getMyProfile,
   updateMyProfile,
+  changeUserRole
 };
