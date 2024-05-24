@@ -11,13 +11,14 @@ const router = express.Router();
 router.post(
   "/create-flat",
   auth(UserRole.ADMIN,UserRole.USER,UserRole.SELLER,UserRole.SUPER_ADMIN),
-  multiFileUploader.upload.array("files", 10),
-  async (req: Request, res: Response, next: NextFunction) => {
-    req.body = flatValidationSchemas.createFlatSchema.parse(
-      JSON.parse(req.body.data)
-    );
-    return FlatController.createFlat(req, res, next);
-  }
+  // multiFileUploader.upload.array("files", 10),
+  // async (req: Request, res: Response, next: NextFunction) => {
+  //   req.body = flatValidationSchemas.createFlatSchema.parse(
+  //     JSON.parse(req.body.data)
+  //   );
+    // return FlatController.createFlat(req, res, next);
+  // }
+     FlatController.createFlat
 );
 router.get('/get-all-flats',
   auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),

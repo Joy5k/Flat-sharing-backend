@@ -20,9 +20,9 @@ const loginUser = async (payload: { email: string; password: string }) => {
     payload.password,
     userData.password
   );
-
+console.log(isCorrectPassword);
   if (!isCorrectPassword) {
-    throw new Error("Password incorrect!");
+   throw new ApiError(401,"Password incorrect!");
   }
   const accessToken = jwtHelpers.generateToken(
     {
@@ -90,12 +90,12 @@ const changePassword = async (user: any, payload: any) => {
       status: UserStatus.ACTIVE,
     },
   });
-
+console.log(userData,"user----------",user,"--------------data",payload);
   const isCorrectPassword: boolean = await bcrypt.compare(
     payload.oldPassword,
-    userData.password
+    userData.password,
   );
-
+  console.log(isCorrectPassword,"match is not or yes");
   if (!isCorrectPassword) {
     throw new Error("Password incorrect!");
   }
@@ -104,11 +104,11 @@ const changePassword = async (user: any, payload: any) => {
 
   await prisma.user.update({
     where: {
-      email: userData.email,
+      id: userData.id,
     },
     data: {
       password: hashedPassword,
-      needPasswordChange: false,
+      // needPasswordChange: false,
     },
   });
 
@@ -130,7 +130,6 @@ const forgotPassword = async (payload: { email: string }) => {
     config.jwt.reset_pass_secret as Secret,
     config.jwt.reset_pass_token_expires_in as string
   );
-  //console.log(resetPassToken)
   const resetPassLink =
   config.reset_pass_link + `?userId=${userData.id}&token=${resetPassToken}`;
   
@@ -150,7 +149,6 @@ const forgotPassword = async (payload: { email: string }) => {
         </div>
         `
   );
-  //console.log(resetPassLink)
 };
 
 

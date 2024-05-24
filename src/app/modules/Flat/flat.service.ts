@@ -11,23 +11,23 @@ import { Prisma, UserRole } from "@prisma/client";
 const createFlatIntoDB = async (req: Request) => {
   const user = req.user
 
-  const files = req.files as IFile[];
-  let flatPhotos: { imageUrl: string }[] = [];
-  if (files && files.length > 0) {
-    try {
-      const uploadToCloudinary = await multiFileUploader.uploadToCloudinary(
-        files
-      );
-      uploadToCloudinary.forEach((response: ICloudinaryResponse) => {
-        if (response.secure_url) {
-          flatPhotos.push({ imageUrl: response.secure_url });
-        }
-      });
-      req.body.photos = flatPhotos;
-    } catch (error) {
-      console.error("Error uploading to Cloudinary:", error);
-    }
-  }
+  // const files = req.files as IFile[];
+  // let flatPhotos: { imageUrl: string }[] = [];
+  // if (files && files.length > 0) {
+  //   try {
+  //     const uploadToCloudinary = await multiFileUploader.uploadToCloudinary(
+  //       files
+  //     );
+  //     uploadToCloudinary.forEach((response: ICloudinaryResponse) => {
+  //       if (response.secure_url) {
+  //         flatPhotos.push({ imageUrl: response.secure_url });
+  //       }
+  //     });
+  //     req.body.photos = flatPhotos;
+  //   } catch (error) {
+  //     console.error("Error uploading to Cloudinary:", error);
+  //   }
+  // }
   const flatData = req.body;
 
   const result = await prisma.flat.create({

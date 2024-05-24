@@ -24,20 +24,21 @@ router.get(
 router.post(
   "/create-admin",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
-
-  fileUploader.upload.single("file"),
-  (req: Request, res: Response, next: NextFunction) => {
-    req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data));
-    return userController.createAdmin(req, res, next);
-  }
+  userController.createAdmin
+  // fileUploader.upload.single("file"),
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data));
+  //   return userController.createAdmin(req, res, next);
+  // }
 );
 router.post(
   "/create-user",
-  fileUploader.upload.single("file"),
-  (req: Request, res: Response, next: NextFunction) => {
-    req.body = userValidation.createUser.parse(JSON.parse(req.body.data));
-    return userController.createUser(req, res, next);
-  }
+  // fileUploader.upload.single("file"),
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   req.body = userValidation.createUser.parse(JSON.parse(req.body.data));
+  //   return userController.createUser(req, res, next);
+  // }
+  userController.createUser
 );
 
 router.patch(
