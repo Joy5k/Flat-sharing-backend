@@ -229,7 +229,9 @@ const changeUserRole = async (id: any, status: {role:string}) => {
       where: {
         id,
       },
-      data: status,
+        data: {
+        role: status.role as UserRole, // Ensuring role is of type UserRole
+      },
       select: {
         id: true,
         username: true,
