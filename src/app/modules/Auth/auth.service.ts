@@ -90,12 +90,10 @@ const changePassword = async (user: any, payload: any) => {
       status: UserStatus.ACTIVE,
     },
   });
-console.log(userData,"user----------",user,"--------------data",payload);
   const isCorrectPassword: boolean = await bcrypt.compare(
     payload.oldPassword,
     userData.password,
   );
-  console.log(isCorrectPassword,"match is not or yes");
   if (!isCorrectPassword) {
     throw new Error("Password incorrect!");
   }

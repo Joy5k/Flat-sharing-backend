@@ -29,8 +29,8 @@ const createFlatIntoDB = async (req: Request) => {
   //   }
   // }
   const flatData = req.body;
-
   const result = await prisma.flat.create({
+    
     data: {
       ...flatData,
       photos: {

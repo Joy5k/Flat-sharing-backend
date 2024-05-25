@@ -40,6 +40,7 @@ const createAdmin = async (req: Request): Promise<Admin> => {
 
   return result;
 };
+
 const createUser = async (req: Request): Promise<User> => {
   const file = req.file as IFile;
 
@@ -58,12 +59,10 @@ const createUser = async (req: Request): Promise<User> => {
     password: hashedPassword,
     role: UserRole.USER,
   };
-
   const result = await prisma.$transaction(async (transactionClient) => {
     const createUserData = await transactionClient.user.create({
       data: userData,
     });
-
     return createUserData;
   });
 
@@ -115,6 +114,7 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
     select: {
       id: true,
       email: true,
+      username:true,
       role: true,
       needPasswordChange: true,
       status: true,
@@ -139,7 +139,6 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
 };
 
 const editProfileIntoDB = async (email: string, payload: {username?:string,email?:string}) => {
-  console.log(email);
   
  const isExistInUser= await prisma.user.findUniqueOrThrow({
     where: {
@@ -211,7 +210,10 @@ const editProfileIntoDB = async (email: string, payload: {username?:string,email
   }
 
 };
-const changeUserRole = async (id: any, status: UserRole) => {
+
+
+const changeUserRole = async (id: any, status: {role:string}) => {
+  console.log(id,status.role)
   const result = await prisma.user.findUniqueOrThrow({
     where: {
       id,
@@ -222,7 +224,6 @@ const changeUserRole = async (id: any, status: UserRole) => {
       profilePhoto: true,
     },
   });
-  console.log(result);
   return await prisma.$transaction(async (transactionClient) => {
     const updateUser = await transactionClient.user.update({
       where: {
@@ -241,11 +242,29 @@ const changeUserRole = async (id: any, status: UserRole) => {
         updatedAt: true,
       },
     });
-
-    await transactionClient.admin.create({
-      data: result,
+    const isExistInAdmin = await prisma.admin.findFirst({
+      where: {
+        email:result.email,
+      },
+      select: {
+        username: true,
+        email: true,
+        profilePhoto: true,
+      },
     });
-
+  
+    if (!isExistInAdmin) {
+      await transactionClient.admin.create({
+        data: result,
+      });
+  
+    } else if(isExistInAdmin&&status.role==="USER"){
+      await transactionClient.admin.delete({
+        where: {
+          email:result.email,
+        }
+      })
+    } 
     return updateUser;
   });
 };

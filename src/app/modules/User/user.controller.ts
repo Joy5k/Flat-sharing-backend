@@ -62,7 +62,6 @@ const editProfile = catchAsync(async (req: Request, res: Response) => {
 const changeUserRole = catchAsync(async (req: Request, res: Response) => {
 
     const { userId } = req.params;
-    console.log(userId);
     const result = await userService.changeUserRole(userId, req.body)
 
     sendResponse(res, {
