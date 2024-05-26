@@ -87,7 +87,7 @@ const getFlatsFromDB = async (
   }
 
   // Filter by number of bedrooms
-  if (bedrooms !== undefined) {
+  if (bedrooms) {
     andConditions.push({
       bedrooms: Number(bedrooms),
     });
