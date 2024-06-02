@@ -54,7 +54,7 @@ const getFlatsFromDB = async (
 ) => {
   const { limit,page, skip } = paginationHelper.calculatePagination(options);
   const { location, priceMin, priceMax, bedrooms } = filters;
-  
+  console.log({location, priceMin, priceMax, bedrooms})
   const andConditions: Prisma.FlatWhereInput[] = [];
 
   // Filter by user role
@@ -80,8 +80,8 @@ const getFlatsFromDB = async (
   if (priceMin !== undefined || priceMax !== undefined) {
     andConditions.push({
       rentAmount: {
-        gte: priceMin,
-        lte: priceMax,
+        gte: Number(priceMin),
+        lte: Number(priceMax),
       },
     });
   }

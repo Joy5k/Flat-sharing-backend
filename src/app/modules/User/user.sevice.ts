@@ -160,22 +160,26 @@ const editProfileIntoDB = async (email: string, payload: { username?: string, em
   if (payload.username) {
       updateUserPayload.username = payload.username;
   }
-
   if (payload.email) {
-      if (payload.email !== email) {
-          // Check if the new email already exists in the database
-          const existingUserWithEmail = await prisma.user.findUnique({
-              where: {
-                  email: payload.email,
-              },
-          });
+       updateUserPayload.email = payload.email;
 
-          if (existingUserWithEmail) {
-              throw new Error("Email already exists");
-          }
-      }
-      updateUserPayload.email = payload.email;
   }
+
+  // if (payload.email) {
+  //     if (payload.email !== email) {
+  //         // Check if the new email already exists in the database
+  //         const existingUserWithEmail = await prisma.user.findUnique({
+  //             where: {
+  //                 email: payload.email,
+  //             },
+  //         });
+
+  //         if (existingUserWithEmail) {
+  //             throw new Error("Email already exists");
+  //         }
+  //     }
+  //     updateUserPayload.email = payload.email;
+  // }
 
   // Update user details
   const updateUser = await prisma.user.update({
