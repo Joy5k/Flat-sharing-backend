@@ -55,7 +55,7 @@ const editProfile = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Users profile role changed!",
+        message: "profile updated!",
         data: result
     })
 });

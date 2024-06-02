@@ -138,53 +138,52 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
   };
 };
 
-const editProfileIntoDB = async (email: string, payload: {username?:string,email?:string}) => {
-  
- const isExistInUser= await prisma.user.findUniqueOrThrow({
-    where: {
-      email,
-    },
-    select: {
-      username: true,
-      email: true,
-      profilePhoto: true,
-    },
- });
-  
- const isExistInAdmin = await prisma.admin.findUnique({
-  where: {
-    email
-  }
-})
-  
-  if (isExistInUser && !isExistInAdmin) {
-    const updateUser = await prisma.user.update({
+const editProfileIntoDB = async (email: string, payload: { username?: string, email?: string }) => {
+  const isExistInUser = await prisma.user.findUnique({
       where: {
-        email,
-      },
-      data: payload,
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        profilePhoto: true,
-        role: true,
-        needPasswordChange: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-    return updateUser
-  }
-  if (!!isExistInAdmin && !!isExistInUser) {
-    return await prisma.$transaction(async (transactionClient) => {
-      const updateUser = await transactionClient.user.update({
-        where: {
           email,
-        },
-        data: payload,
-        select: {
+      },
+      select: {
+          username: true,
+          email: true,
+          profilePhoto: true,
+      },
+  });
+
+  if (!isExistInUser) {
+      throw new Error("User not found");
+  }
+
+  const updateUserPayload = {} as any;
+
+  // Check if payload contains username and it's not empty
+  if (payload.username) {
+      updateUserPayload.username = payload.username;
+  }
+
+  if (payload.email) {
+      if (payload.email !== email) {
+          // Check if the new email already exists in the database
+          const existingUserWithEmail = await prisma.user.findUnique({
+              where: {
+                  email: payload.email,
+              },
+          });
+
+          if (existingUserWithEmail) {
+              throw new Error("Email already exists");
+          }
+      }
+      updateUserPayload.email = payload.email;
+  }
+
+  // Update user details
+  const updateUser = await prisma.user.update({
+      where: {
+          email,
+      },
+      data: updateUserPayload,
+      select: {
           id: true,
           username: true,
           email: true,
@@ -194,21 +193,10 @@ const editProfileIntoDB = async (email: string, payload: {username?:string,email
           status: true,
           createdAt: true,
           updatedAt: true,
-        },
-      });
-  
-    
-      await transactionClient.admin.update({
-        where: {
-          email
-        },
-        data:payload
-      });
-  
-      return updateUser;
-    });
-  }
+      },
+  });
 
+  return updateUser;
 };
 
 

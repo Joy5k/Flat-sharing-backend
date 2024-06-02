@@ -8,6 +8,7 @@ import { JwtPayload } from "jsonwebtoken";
 const createFlatRequest = catchAsync(async (req: Request, res: Response) => {
   const { flatId } = req.body;
   const { userId } = req.user;
+  console.log({flatId},req.user)
   const flatRequestData = {
     flatId,
     userId,
