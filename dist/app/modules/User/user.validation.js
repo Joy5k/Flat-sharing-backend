@@ -44,8 +44,21 @@ const updateStatus = zod_1.z.object({
         status: zod_1.z.enum([client_1.UserStatus.ACTIVE, client_1.UserStatus.BLOCKED, client_1.UserStatus.DELETED]),
     }),
 });
+const updateRole = zod_1.z.object({
+    body: zod_1.z.object({
+        role: zod_1.z.enum([client_1.UserRole.ADMIN, client_1.UserRole.USER, client_1.UserRole.SELLER]),
+    }),
+});
+const editProfile = zod_1.z.object({
+    body: zod_1.z.object({
+        username: zod_1.z.string().optional(),
+        email: zod_1.z.string().optional()
+    }),
+});
 exports.userValidation = {
     createAdmin,
     createUser,
     updateStatus,
+    updateRole,
+    editProfile
 };

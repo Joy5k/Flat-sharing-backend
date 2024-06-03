@@ -31,10 +31,9 @@ const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const getAllFromDB = (params, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { page, limit, skip } = paginationHelper_1.paginationHelper.calculatePagination(options);
     const { searchTerm } = params, filterData = __rest(params, ["searchTerm"]);
-    const andCondions = [];
-    //console.log(filterData);
+    const andConditions = [];
     if (params.searchTerm) {
-        andCondions.push({
+        andConditions.push({
             OR: admin_constant_1.adminSearchAbleFields.map((field) => ({
                 [field]: {
                     contains: params.searchTerm,
@@ -44,7 +43,7 @@ const getAllFromDB = (params, options) => __awaiter(void 0, void 0, void 0, func
         });
     }
     if (Object.keys(filterData).length > 0) {
-        andCondions.push({
+        andConditions.push({
             AND: Object.keys(filterData).map((key) => ({
                 [key]: {
                     equals: filterData[key],
@@ -52,11 +51,11 @@ const getAllFromDB = (params, options) => __awaiter(void 0, void 0, void 0, func
             })),
         });
     }
-    andCondions.push({
+    andConditions.push({
         isDeleted: false,
     });
-    //console.dir(andCondions, { depth: 'inifinity' })
-    const whereConditions = { AND: andCondions };
+    //console.dir(andConditions, { depth: 'inifinity' })
+    const whereConditions = { AND: andConditions };
     const result = yield prisma_1.default.admin.findMany({
         where: whereConditions,
         skip,

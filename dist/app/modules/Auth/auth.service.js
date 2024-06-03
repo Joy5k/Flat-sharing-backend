@@ -52,8 +52,9 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         },
     });
     const isCorrectPassword = yield bcrypt.compare(payload.password, userData.password);
+    console.log(isCorrectPassword);
     if (!isCorrectPassword) {
-        throw new Error("Password incorrect!");
+        throw new ApiError_1.default(401, "Password incorrect!");
     }
     const accessToken = jwtHelpers_1.jwtHelpers.generateToken({
         email: userData.email,
@@ -107,11 +108,11 @@ const changePassword = (user, payload) => __awaiter(void 0, void 0, void 0, func
     const hashedPassword = yield bcrypt.hash(payload.newPassword, 12);
     yield prisma_1.default.user.update({
         where: {
-            email: userData.email,
+            id: userData.id,
         },
         data: {
             password: hashedPassword,
-            needPasswordChange: false,
+            // needPasswordChange: false,
         },
     });
     return {
@@ -126,7 +127,6 @@ const forgotPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
         },
     });
     const resetPassToken = jwtHelpers_1.jwtHelpers.generateToken({ email: userData.email, role: userData.role }, config_1.default.jwt.reset_pass_secret, config_1.default.jwt.reset_pass_token_expires_in);
-    //console.log(resetPassToken)
     const resetPassLink = config_1.default.reset_pass_link + `?userId=${userData.id}&token=${resetPassToken}`;
     yield (0, emailSender_1.default)(userData.email, `
         <div>
@@ -141,7 +141,6 @@ const forgotPassword = (payload) => __awaiter(void 0, void 0, void 0, function* 
 
         </div>
         `);
-    //console.log(resetPassLink)
 });
 const resetPassword = (token, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = yield prisma_1.default.user.findUniqueOrThrow({

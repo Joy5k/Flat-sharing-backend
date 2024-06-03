@@ -42,10 +42,6 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         success: true,
         message: "Access token genereated successfully!",
         data: result
-        // data: {
-        //     accessToken: result.accessToken,
-        //     needPasswordChange: result.needPasswordChange
-        // }
     });
 }));
 const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

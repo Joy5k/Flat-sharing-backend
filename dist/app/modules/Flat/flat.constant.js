@@ -4,6 +4,6 @@ exports.flatFilterableFields = void 0;
 exports.flatFilterableFields = [
     'location',
     'bedrooms',
-    'maxPrice',
-    'minPrice'
+    'priceMin',
+    'priceMax',
 ];

@@ -54,7 +54,6 @@ const getFlatsFromDB = async (
 ) => {
   const { limit,page, skip } = paginationHelper.calculatePagination(options);
   const { location, priceMin, priceMax, bedrooms } = filters;
-  console.log({location, priceMin, priceMax, bedrooms})
   const andConditions: Prisma.FlatWhereInput[] = [];
 
   // Filter by user role
@@ -167,7 +166,6 @@ const getSingleFlatFromDB = async (id: string) => {
 }
 
 const updateFlatDataIntoDB = async (id: string, payload: any) => {
-  console.log(payload,"The flat data was updated");
   const result = await prisma.flat.update({
     where: {
       id

@@ -50,6 +50,26 @@ const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         data: result.data
     });
 }));
+const editProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.user;
+    const result = yield user_sevice_1.userService.editProfileIntoDB(email, req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "profile updated!",
+        data: result
+    });
+}));
+const changeUserRole = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    const result = yield user_sevice_1.userService.changeUserRole(userId, req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Users profile role changed!",
+        data: result
+    });
+}));
 const changeProfileStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const result = yield user_sevice_1.userService.changeProfileStatus(id, req.body);
@@ -86,5 +106,7 @@ exports.userController = {
     getAllFromDB,
     changeProfileStatus,
     getMyProfile,
-    updateMyProfile
+    updateMyProfile,
+    changeUserRole,
+    editProfile
 };

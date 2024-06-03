@@ -20,6 +20,7 @@ const flatShareRequest_services_1 = require("./flatShareRequest.services");
 const createFlatRequest = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { flatId } = req.body;
     const { userId } = req.user;
+    console.log({ flatId }, req.user);
     const flatRequestData = {
         flatId,
         userId,

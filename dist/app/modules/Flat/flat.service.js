@@ -13,28 +13,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FlatServices = void 0;
-const multiFileUploader_1 = require("../../../helpers/multiFileUploader");
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const client_1 = require("@prisma/client");
 const createFlatIntoDB = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const files = req.files;
-    let flatPhotos = [];
-    if (files && files.length > 0) {
-        try {
-            const uploadToCloudinary = yield multiFileUploader_1.multiFileUploader.uploadToCloudinary(files);
-            uploadToCloudinary.forEach((response) => {
-                if (response.secure_url) {
-                    flatPhotos.push({ imageUrl: response.secure_url });
-                }
-            });
-            req.body.photos = flatPhotos;
-        }
-        catch (error) {
-            console.error("Error uploading to Cloudinary:", error);
-        }
-    }
+    // const files = req.files as IFile[];
+    // let flatPhotos: { imageUrl: string }[] = [];
+    // if (files && files.length > 0) {
+    //   try {
+    //     const uploadToCloudinary = await multiFileUploader.uploadToCloudinary(
+    //       files
+    //     );
+    //     uploadToCloudinary.forEach((response: ICloudinaryResponse) => {
+    //       if (response.secure_url) {
+    //         flatPhotos.push({ imageUrl: response.secure_url });
+    //       }
+    //     });
+    //     req.body.photos = flatPhotos;
+    //   } catch (error) {
+    //     console.error("Error uploading to Cloudinary:", error);
+    //   }
+    // }
     const flatData = req.body;
     const result = yield prisma_1.default.flat.create({
         data: Object.assign(Object.assign({}, flatData), { photos: {
@@ -73,13 +73,13 @@ const getFlatsFromDB = (user, filters, options) => __awaiter(void 0, void 0, voi
     if (priceMin !== undefined || priceMax !== undefined) {
         andConditions.push({
             rentAmount: {
-                gte: priceMin,
-                lte: priceMax,
+                gte: Number(priceMin),
+                lte: Number(priceMax),
             },
         });
     }
     // Filter by number of bedrooms
-    if (bedrooms !== undefined) {
+    if (bedrooms) {
         andConditions.push({
             bedrooms: Number(bedrooms),
         });
@@ -148,10 +148,25 @@ const getSingleFlatFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 const updateFlatDataIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload, "The flat data was updated");
     const result = yield prisma_1.default.flat.update({
         where: {
             id
+        },
+        data: payload
+    });
+    return result;
+});
+const updateMyFlatDataIntoDB = (id, userId, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    yield prisma_1.default.flat.findFirstOrThrow({
+        where: {
+            id,
+            userId
+        }
+    });
+    const result = yield prisma_1.default.flat.update({
+        where: {
+            id,
+            userId
         },
         data: payload
     });
@@ -178,5 +193,6 @@ exports.FlatServices = {
     getMyFlatsFromDB,
     getSingleFlatFromDB,
     updateFlatDataIntoDB,
+    updateMyFlatDataIntoDB,
     deleteFlatFromDB
 };

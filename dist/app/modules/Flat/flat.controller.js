@@ -71,6 +71,17 @@ const updateFlat = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result
     });
 }));
+const updateMyFlat = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.user;
+    const { id } = req.params;
+    const result = yield flat_service_1.FlatServices.updateMyFlatDataIntoDB(id, userId, req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "FLat data updated!",
+        data: result
+    });
+}));
 const deleteFlat = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const result = yield flat_service_1.FlatServices.deleteFlatFromDB(id);
@@ -87,5 +98,6 @@ exports.FlatController = {
     getMyFlats,
     getSingleFlat,
     updateFlat,
+    updateMyFlat,
     deleteFlat
 };

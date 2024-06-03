@@ -138,6 +138,7 @@ const getAllFromDB = (params, options) => __awaiter(void 0, void 0, void 0, func
         select: {
             id: true,
             email: true,
+            username: true,
             role: true,
             needPasswordChange: true,
             status: true,
@@ -158,8 +159,121 @@ const getAllFromDB = (params, options) => __awaiter(void 0, void 0, void 0, func
         data: result,
     };
 });
+const editProfileIntoDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExistInUser = yield prisma_1.default.user.findUnique({
+        where: {
+            email,
+        },
+        select: {
+            username: true,
+            email: true,
+            profilePhoto: true,
+        },
+    });
+    if (!isExistInUser) {
+        throw new Error("User not found");
+    }
+    const updateUserPayload = {};
+    // Check if payload contains username and it's not empty
+    if (payload.username) {
+        updateUserPayload.username = payload.username;
+    }
+    if (payload.email) {
+        updateUserPayload.email = payload.email;
+    }
+    // if (payload.email) {
+    //     if (payload.email !== email) {
+    //         // Check if the new email already exists in the database
+    //         const existingUserWithEmail = await prisma.user.findUnique({
+    //             where: {
+    //                 email: payload.email,
+    //             },
+    //         });
+    //         if (existingUserWithEmail) {
+    //             throw new Error("Email already exists");
+    //         }
+    //     }
+    //     updateUserPayload.email = payload.email;
+    // }
+    // Update user details
+    const updateUser = yield prisma_1.default.user.update({
+        where: {
+            email,
+        },
+        data: updateUserPayload,
+        select: {
+            id: true,
+            username: true,
+            email: true,
+            profilePhoto: true,
+            role: true,
+            needPasswordChange: true,
+            status: true,
+            createdAt: true,
+            updatedAt: true,
+        },
+    });
+    return updateUser;
+});
+const changeUserRole = (id, status) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(id, status.role);
+    const result = yield prisma_1.default.user.findUniqueOrThrow({
+        where: {
+            id,
+        },
+        select: {
+            username: true,
+            email: true,
+            profilePhoto: true,
+        },
+    });
+    return yield prisma_1.default.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const updateUser = yield transactionClient.user.update({
+            where: {
+                id,
+            },
+            data: {
+                role: status.role, // Ensuring role is of type UserRole
+            },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                profilePhoto: true,
+                role: true,
+                needPasswordChange: true,
+                status: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+        const isExistInAdmin = yield prisma_1.default.admin.findFirst({
+            where: {
+                email: result.email,
+            },
+            select: {
+                username: true,
+                email: true,
+                profilePhoto: true,
+            },
+        });
+        if (!isExistInAdmin) {
+            yield transactionClient.admin.create({
+                data: result,
+            });
+        }
+        else if (isExistInAdmin && status.role === "USER") {
+            yield transactionClient.admin.delete({
+                where: {
+                    email: result.email,
+                }
+            });
+        }
+        return updateUser;
+    }));
+});
 const changeProfileStatus = (id, status) => __awaiter(void 0, void 0, void 0, function* () {
-    const userData = yield prisma_1.default.user.findUniqueOrThrow({
+    yield prisma_1.default.user.findUniqueOrThrow({
         where: {
             id,
         },
@@ -175,7 +289,7 @@ const changeProfileStatus = (id, status) => __awaiter(void 0, void 0, void 0, fu
 const getMyProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const userInfo = yield prisma_1.default.user.findUniqueOrThrow({
         where: {
-            id: user === null || user === void 0 ? void 0 : user.userId,
+            email: user === null || user === void 0 ? void 0 : user.email,
             status: client_1.UserStatus.ACTIVE,
         },
         select: {
@@ -186,7 +300,7 @@ const getMyProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
             needPasswordChange: true,
             role: true,
             status: true,
-        }
+        },
     });
     let profileInfo;
     if (userInfo.role === client_1.UserRole.SUPER_ADMIN) {
@@ -271,4 +385,6 @@ exports.userService = {
     changeProfileStatus,
     getMyProfile,
     updateMyProfile,
+    changeUserRole,
+    editProfileIntoDB
 };

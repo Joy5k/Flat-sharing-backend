@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const config_1 = __importDefault(require("../../../config"));
 const emailSender = (email, html) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(config_1.default.emailSender.app_pass, "password");
     const transporter = nodemailer_1.default.createTransport({
         host: "smtp.gmail.com",
         port: 587,
@@ -28,12 +29,12 @@ const emailSender = (email, html) => __awaiter(void 0, void 0, void 0, function*
         }
     });
     const info = yield transporter.sendMail({
-        from: '"PH Health Care" <fahimfiroz.ph@gmail.com>', // sender address
+        from: '"Flat Share" <mmehedihasanjoyv@gmail.com> ', // sender address
         to: email, // list of receivers
-        subject: "Reset Password Link", // Subject line
+        subject: "Change Password Link", // Subject line
         //text: "Hello world?", // plain text body
         html, // html body
     });
-    //console.log("Message sent: %s", info.messageId);
+    console.log("Message sent: %s", info.messageId);
 });
 exports.default = emailSender;
