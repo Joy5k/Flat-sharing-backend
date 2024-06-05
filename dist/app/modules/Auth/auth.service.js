@@ -88,6 +88,7 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = jwtHelpers_1.jwtHelpers.generateToken({
         email: userData.email,
         role: userData.role,
+        userId: userData.id
     }, config_1.default.jwt.jwt_secret, config_1.default.jwt.expires_in);
     return {
         accessToken,

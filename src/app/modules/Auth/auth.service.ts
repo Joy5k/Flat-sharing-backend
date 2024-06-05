@@ -38,11 +38,12 @@ console.log(isCorrectPassword);
     {
       email: userData.email,
       role: userData.role,
+      userId:userData.id
     },
     config.jwt.refresh_token_secret as Secret,
     config.jwt.refresh_token_expires_in as string
   );
-
+console.log(refreshToken);
   return {
     accessToken,
     refreshToken,
@@ -72,6 +73,7 @@ const refreshToken = async (token: string) => {
     {
       email: userData.email,
       role: userData.role,
+      userId:userData.id
     },
     config.jwt.jwt_secret as Secret,
     config.jwt.expires_in as string

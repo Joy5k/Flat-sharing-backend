@@ -10,8 +10,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     const { refreshToken } = result;
 
     res.cookie('refreshToken', refreshToken, {
-        secure: false,
-        httpOnly: true
+        secure: true, 
+        httpOnly: true, 
     });
     sendResponse(res, {
         statusCode: httpStatus.OK,
@@ -32,7 +32,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Access token genereated successfully!",
+        message: "Access token generated successfully!",
         data: result
      
     })
