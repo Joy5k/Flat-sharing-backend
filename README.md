@@ -49,7 +49,7 @@ require('crypto').randomBytes(64).toString('hex')
 
 ```
 
-- **Response** (Response should not include the password):
+- **Response**:
 
 ```json
 {
@@ -90,7 +90,7 @@ require('crypto').randomBytes(64).toString('hex')
 ```json
 {
     "success": true,
-statuscode:200,
+   "statuscode":200,
     "message": "Logged in successfully!",
     "data": {
         "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiaXIyQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwidXNlcklkIjoiMTUzYmMyMDYtMTY2ZC00NTA5LTg5YjQtMDM5OTJkYWRhYWZiIiwiaWF0IjoxNzE5MTcwMzc5LCJleHAiOjE3MjA0NjYzNzl9.3GJrDLp6f8Hl1MwL2TshOAi7Q8ZU0-m-O0Gvwvs1P2A",
@@ -98,7 +98,7 @@ statuscode:200,
     }
 }
 ```
-### **1. User Registration**
+### **1. Forgot-Password
 
 - **Endpoint:** **`POST /api/forgot-password`**
 - **Request Body:**
@@ -112,7 +112,7 @@ statuscode:200,
 ```
 after entering the email, the email will get a verification URL
 
-- **Response** (Response should not include the password):
+- **Response**
 - 
 ```json
 {
@@ -121,6 +121,130 @@ after entering the email, the email will get a verification URL
 }
 
 ```
+### **1. Edit-Profile
+
+- **Endpoint:** **`POST /user/editProfile`**
+- **Request Body:**
+
+```json
+{
+    "name":"Mehedi Hasan"
+}
+```
+
+- **Response**
+- 
+```json
+{
+    "success": true,
+    "message": "profile updated!",
+    "data": {
+        "id": "153bc206-166d-4509-89b4-03992dadaafb",
+        "username": "abir",
+        "email": "abir2@gmail.com",
+        "profilePhoto": null,
+        "role": "USER",
+        "needPasswordChange": true,
+        "status": "ACTIVE",
+        "createdAt": "2024-06-23T19:17:39.266Z",
+        "updatedAt": "2024-06-23T19:17:39.266Z"
+    }
+}
+
+```
+
+
+
+
+
+
+
+### **3. Add a Flat**
+
+- **Endpoint:** **`POST /api/create-flat`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+- **Request Body:**
+
+```json
+{
+  "location": "123 Main St, Springfield",
+  "description": "A cozy two-bedroom apartment in the city center.",
+  "rentAmount": 1200.0,
+  "bedrooms": 2,
+  "amenities": ["Wi-Fi", "Air Conditioning", "Heating", "Washer/Dryer"],
+  
+    "photos": [
+      {
+        "id": "c1d1e1f1-1111-1111-1111-111111111111",
+        "imageUrl": "https://example.com/photo1.jpg"
+      },
+      {
+        "id": "d2e2f2g2-2222-2222-2222-222222222222",
+        "imageUrl": "https://example.com/photo2.jpg"
+      }
+    ]
+  
+}
+
+```
+
+- **Response:**
+
+```json
+{
+    "success": true,
+   "statuscode":200,
+    "message": "Flat created successfully",
+    "data": {
+        "id": "ab19159a-5af5-45d1-ad41-49b033454942",
+        "location": "123 Main St, Springfield",
+        "description": "A cozy two-bedroom apartment in the city center.",
+        "rentAmount": 1200,
+        "bedrooms": 2,
+        "amenities": [
+            "Wi-Fi",
+            "Air Conditioning",
+            "Heating",
+            "Washer/Dryer"
+        ],
+        "createdAt": "2024-06-23T19:29:05.097Z",
+        "updatedAt": "2024-06-23T19:29:05.097Z",
+        "userId": "153bc206-166d-4509-89b4-03992dadaafb",
+        "photos": [
+            {
+                "id": "b0ed987e-aede-4eb2-9912-cd5eb876d3a9",
+                "imageUrl": "https://example.com/photo1.jpg",
+                "flatId": "ab19159a-5af5-45d1-ad41-49b033454942"
+            },
+            {
+                "id": "ffce852a-cffd-4f48-bf8d-626b5fe3d5eb",
+                "imageUrl": "https://example.com/photo2.jpg",
+                "flatId": "ab19159a-5af5-45d1-ad41-49b033454942"
+            }
+        ]
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 If you want to use my API then you might be got the error 
 ```json
