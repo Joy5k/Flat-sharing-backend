@@ -1,6 +1,6 @@
 For setup prisma project with postgresql follow this,
 
-```
+```javascript
 npm install
 npm init -y
 npx tsc --init
