@@ -200,8 +200,70 @@ after entering the email, the email will get a verification URL
 }
 ```
 
+### **3. Block  User**
 
+- **Endpoint:** **`POST /user/<userId>/status`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+- **Request Body:**
 
+```json
+{
+    "status":"BLOCKED"
+}
+```
+- **Response**
+
+```json
+{
+    "success": true,
+    "message": "Users profile status changed!",
+    "data": {
+        "id": "0d85b042-da8a-4356-9a0d-1bd001e01375",
+        "username": "ariana",
+        "email": "ariana@gmail.com",
+        "password": "$2b$12$zrMjZ4phkYFg8d7vhB0fFeapNGTr441jVXU2Ux5l4RXvLZpG3C/ba",
+        "profilePhoto": null,
+        "role": "USER",
+        "needPasswordChange": true,
+        "status": "BLOCKED",
+        "createdAt": "2024-05-24T22:33:23.585Z",
+        "updatedAt": "2024-06-23T19:53:31.539Z"
+    }
+}
+```
+
+### **3. Convert  User to Admin**
+
+- **Endpoint:** **`POST /user/<userId>/role`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+- **Request Body:**
+
+```json
+{
+    "role":"ADMIN"
+}
+```
+- **Response:**
+  
+```json
+{
+    "success": true,
+    "message": "Users profile role changed!",
+    "data": {
+        "id": "0d85b042-da8a-4356-9a0d-1bd001e01375",
+        "username": "ariana",
+        "email": "ariana@gmail.com",
+        "profilePhoto": null,
+        "role": "ADMIN",
+        "needPasswordChange": true,
+        "status": "ACTIVE",
+        "createdAt": "2024-05-24T22:33:23.585Z",
+        "updatedAt": "2024-06-23T19:57:13.898Z"
+    }
+}
+```
 
 ### **3. Add a Flat**
 
