@@ -78,10 +78,11 @@ require('crypto').randomBytes(64).toString('hex')
 - **Request Body:**
 
 ```json
-{
-    "email": "john@example.com",
-    "password": "password"
+ {
+  "email": "abir2@gmail.com",
+  "password": "123456"
 }
+
 ```
 
 - **Response:**
@@ -89,13 +90,11 @@ require('crypto').randomBytes(64).toString('hex')
 ```json
 {
     "success": true,
-    "statusCode": 200,
-    "message": "User logged in successfully",
+statuscode:200,
+    "message": "Logged in successfully!",
     "data": {
-        "id": "b9964127-2924-42bb-9970-60f93c016bvf",
-        "name": "John Doe",
-        "email": "john@example.com",
-        "token": "<JWT token>",
+        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiaXIyQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwidXNlcklkIjoiMTUzYmMyMDYtMTY2ZC00NTA5LTg5YjQtMDM5OTJkYWRhYWZiIiwiaWF0IjoxNzE5MTcwMzc5LCJleHAiOjE3MjA0NjYzNzl9.3GJrDLp6f8Hl1MwL2TshOAi7Q8ZU0-m-O0Gvwvs1P2A",
+        "needPasswordChange": true
     }
 }
 ```
