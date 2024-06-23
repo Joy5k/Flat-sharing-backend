@@ -98,6 +98,18 @@ require('crypto').randomBytes(64).toString('hex')
     }
 }
 ```
+-**If password mismatch**
+-**Response**
+```json
+{
+    "success": false,
+    "message": "Password incorrect!",
+    "error": {
+        "statusCode": 401
+    }
+}
+```
+
 ### **1. Forgot-Password
 
 - **Endpoint:** **`POST /auth/forgot-password`**
