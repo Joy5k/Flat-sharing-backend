@@ -35,7 +35,7 @@ require('crypto').randomBytes(64).toString('hex')
 ##Authentication 
 ### **1. User Registration**
 
-- **Endpoint:** **`POST /api/create-user`**
+- **Endpoint:** **`POST /user/create-user`**
 - **Request Body:**
 
 ```json
@@ -74,7 +74,7 @@ require('crypto').randomBytes(64).toString('hex')
 
 ### **2. User Login**
 
-- **Endpoint:** **`POST /api/login`**
+- **Endpoint:** **`POST /auth/login`**
 - **Request Body:**
 
 ```json
@@ -100,7 +100,7 @@ require('crypto').randomBytes(64).toString('hex')
 ```
 ### **1. Forgot-Password
 
-- **Endpoint:** **`POST /api/forgot-password`**
+- **Endpoint:** **`POST /auth/forgot-password`**
 - **Request Body:**
 
 ```json
