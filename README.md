@@ -54,15 +54,21 @@ require('crypto').randomBytes(64).toString('hex')
 ```json
 {
     "success": true,
-    "statusCode": 201,
-    "message": "User registered successfully",
+    "statusCode": 200,
+    "message": "User Created successfully!",
     "data": {
-        "id": "b9964127-2924-42bb-9970-60f93c016bvf",
-        "name": "John Doe",
-        "email": "john@example.com",
-        "createdAt": "2024-03-24T12:00:00Z",
-        "updatedAt": "2024-03-24T12:00:00Z"
+        "id": "153bc206-166d-4509-89b4-03992dadaafb",
+        "username": "abir",
+        "email": "abir2@gmail.com",
+        "password": "$2b$12$JS21qEIUMbSKKjSDaudpUeSAiIuUuyJaTkcBLCvEukxCn6ToQWxCu",
+        "profilePhoto": null,
+        "role": "USER",
+        "needPasswordChange": true,
+        "status": "ACTIVE",
+        "createdAt": "2024-06-23T19:17:39.266Z",
+        "updatedAt": "2024-06-23T19:17:39.266Z"
     }
+}
 }
 ```
 
