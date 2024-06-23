@@ -124,6 +124,8 @@ after entering the email, the email will get a verification URL
 ### **1. Edit-Profile
 
 - **Endpoint:** **`POST /user/editProfile`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
 - **Request Body:**
 
 ```json
