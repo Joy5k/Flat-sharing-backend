@@ -35,7 +35,7 @@ require('crypto').randomBytes(64).toString('hex')
 ##Authentication 
 ### **1. User Registration**
 
-- **Endpoint:** **`POST /api/register`**
+- **Endpoint:** **`POST /api/create-user`**
 - **Request Body:**
 
 ```json
@@ -98,8 +98,29 @@ statuscode:200,
     }
 }
 ```
+### **1. User Registration**
 
+- **Endpoint:** **`POST /api/forgot-password`**
+- **Request Body:**
 
+```json
+
+{
+  "email": "mmehedihasanjoyv@gmail.com"
+}
+
+```
+after entering the email, the email will get a verification URL
+
+- **Response** (Response should not include the password):
+- 
+```json
+{
+    "success": true,
+    "message": "Check your email!"
+}
+
+```
 
 If you want to use my API then you might be got the error 
 ```json
