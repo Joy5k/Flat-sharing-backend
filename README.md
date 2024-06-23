@@ -415,6 +415,128 @@ after entering the email, the email will get a verification URL
 }
 ```
 
+### **3. Delete your Flat**
+
+- **Endpoint:** **`POST /flat/deleteFlat/anyFlatID`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+
+- **Response:**
+
+```json
+{
+    "success": true,
+    "statuscode":200,
+    "message": "FLat Deleted successfully!",
+    "data": {
+        "count": 3
+    }
+}
+```
+### **3. get single  Flat**
+
+- **Endpoint:** **`POST /flat/getSingleFlat/anyFlatID`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+
+- **Response:**
+
+```json
+{
+    "success": true,
+    "statuscode":200,
+    "message": "Flat retrieval successfully",
+    "data": {
+        "id": "1a78360f-d67e-4a0f-827b-a74f59fe4ffb",
+        "location": "Dhaka",
+        "description": "A modern 2-bedroom apartment located in the heart of the city. This spacious flat offers an open-plan living area with large windows that provide plenty of natural light. The fully equipped kitchen includes state-of-the-art appliances, perfect for those who love to cook. Both bedrooms feature built-in wardrobes and en-suite bathrooms. Additional amenities include a private balcony, secure underground parking, and access to a communal gym and pool.",
+        "photos": [
+            {
+                "id": "2e678441-4094-4999-95b6-5eeaf1537282",
+                "imageUrl": "https://i.ibb.co/fD1ssgJ/istockphoto-488120139-612x612.jpg",
+                "flatId": "1a78360f-d67e-4a0f-827b-a74f59fe4ffb"
+            },
+            {
+                "id": "9bec1b6a-fd2f-4896-8287-1a11b0f95dcf",
+                "imageUrl": "https://i.ibb.co/HCx0Vkz/istockphoto-522540838-612x612.jpg",
+                "flatId": "1a78360f-d67e-4a0f-827b-a74f59fe4ffb"
+            },
+            {
+                "id": "250a0f61-8fcd-46fd-8599-b99c4bd05fa1",
+                "imageUrl": "https://i.ibb.co/dMrLr0N/istockphoto-879931076-612x612.jpg",
+                "flatId": "1a78360f-d67e-4a0f-827b-a74f59fe4ffb"
+            }
+        ],
+        "rentAmount": 5000,
+        "bedrooms": 5,
+        "amenities": [
+            "gym"
+        ],
+        "userId": "05c9f3ca-f9a0-4541-ad9b-e648dac0c796",
+        "createdAt": "2024-06-04T20:01:02.015Z",
+        "updatedAt": "2024-06-04T20:01:02.015Z"
+    }
+}
+```
+
+### **3. get All  Flats as an Admin with search query**
+
+- **Endpoint:** **`POST /flat/get-all-flats?bedrooms=20&location=&priceMin=0&priceMax=1000000`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+
+- **Response:**
+
+```json
+{
+    "success": true,
+    "message": "Flats retrieval successfully",
+    "meta": {
+        "total": 15,
+        "page": 1,
+        "limit": 10
+    },
+    "data": [
+        {
+            "id": "ab19159a-5af5-45d1-ad41-49b033454942",
+            "location": "123 Main St, Springfield",
+            "description": "A cozy two-bedroom apartment in the city center.",
+            "rentAmount": 1200,
+            "bedrooms": 2,
+            "amenities": [
+                "Wi-Fi",
+                "Air Conditioning",
+                "Heating",
+                "Washer/Dryer"
+            ],
+            "createdAt": "2024-06-23T19:29:05.097Z",
+            "updatedAt": "2024-06-23T19:29:05.097Z",
+            "userId": "153bc206-166d-4509-89b4-03992dadaafb",
+            "photos": [
+                {
+                    "id": "b0ed987e-aede-4eb2-9912-cd5eb876d3a9",
+                    "imageUrl": "https://example.com/photo1.jpg",
+                    "flatId": "ab19159a-5af5-45d1-ad41-49b033454942"
+                },
+                {
+                    "id": "ffce852a-cffd-4f48-bf8d-626b5fe3d5eb",
+                    "imageUrl": "https://example.com/photo2.jpg",
+                    "flatId": "ab19159a-5af5-45d1-ad41-49b033454942"
+                }
+            ],
+            "user": {
+                "id": "153bc206-166d-4509-89b4-03992dadaafb",
+                "username": "abir",
+                "email": "abir2@gmail.com",
+                "profilePhoto": null,
+                "role": "USER",
+                "needPasswordChange": true,
+                "status": "ACTIVE"
+            }
+        }.....
+```
+
+
 
 
 
