@@ -194,47 +194,8 @@ after entering the email, the email will get a verification URL
             "createdAt": "2024-06-23T19:17:39.266Z",
             "updatedAt": "2024-06-23T19:17:39.266Z",
             "admin": null
-        },
-        {
-            "id": "e9d95393-f7e0-44df-936f-fcd01a83c8d1",
-            "email": "dr.jahangir@gmail.com",
-            "username": "Dr.Jahangir",
-            "role": "USER",
-            "needPasswordChange": true,
-            "status": "BLOCKED",
-            "createdAt": "2024-06-05T08:56:02.739Z",
-            "updatedAt": "2024-06-11T14:32:15.541Z",
-            "admin": {
-                "id": "a4f886bf-2900-450f-902a-1bcbc2967a5a",
-                "username": "Dr.Jahangir",
-                "email": "dr.jahangir@gmail.com",
-                "profilePhoto": null,
-                "contactNumber": null,
-                "isDeleted": false,
-                "createdAt": "2024-06-11T14:32:13.445Z",
-                "updatedAt": "2024-06-11T14:32:13.445Z"
-            }
-        },
-        {
-            "id": "7a8c772b-991b-4d49-b19b-70892710f9de",
-            "email": "user@gmail.com",
-            "username": "user",
-            "role": "USER",
-            "needPasswordChange": true,
-            "status": "BLOCKED",
-            "createdAt": "2024-05-31T10:38:57.617Z",
-            "updatedAt": "2024-06-11T14:32:18.958Z",
-            "admin": {
-                "id": "649e3d0f-648d-424d-8b41-e3df8d71aa0d",
-                "username": "user",
-                "email": "user@gmail.com",
-                "profilePhoto": null,
-                "contactNumber": null,
-                "isDeleted": false,
-                "createdAt": "2024-06-04T21:59:43.030Z",
-                "updatedAt": "2024-06-04T21:59:43.030Z"
-            }
         }
+        .......
     ]
 }
   ```
