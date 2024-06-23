@@ -98,8 +98,8 @@ require('crypto').randomBytes(64).toString('hex')
     }
 }
 ```
--**If password mismatch**
--**Response**
+- **If password mismatch**
+- **Response**
 ```json
 {
     "success": false,
