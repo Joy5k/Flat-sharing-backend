@@ -334,6 +334,89 @@ after entering the email, the email will get a verification URL
 ```
 
 
+### **3. Update any Flat as a Admin**
+
+- **Endpoint:** **`POST /flat/updateFLat/anyFlatID`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+- **Request Body:**
+
+```json
+{
+  "location": "1230 Main St, Patuakhali"
+}
+
+```
+
+- **Response:**
+
+```json
+{
+    "success": true,
+    "statuscode":200,
+    "message": "FLat data updated!",
+    "data": {
+        "id": "155edef1-f393-4a17-befe-ab9c418889cb",
+        "location": "1230 Main St, Patuakhali",
+        "description": "A lovely two-bedroom flat in the heart of the city. It offers a spacious living area, modern kitchen, and a beautiful view of the park.",
+        "rentAmount": 10,
+        "bedrooms": 3,
+        "amenities": [
+            "wifi",
+            "parking",
+            "pool",
+            "gym",
+            "air conditioning"
+        ],
+        "createdAt": "2024-06-04T09:00:13.074Z",
+        "updatedAt": "2024-06-23T19:59:12.402Z",
+        "userId": "05c9f3ca-f9a0-4541-ad9b-e648dac0c796"
+    }
+}
+```
+### **3. Update your Flat**
+
+- **Endpoint:** **`POST /flat/updateMyFLat/anyFlatID`**
+- **Request Headers:**
+    - `Authorization: <JWT_TOKEN>`
+- **Request Body:**
+
+```json
+{
+  "location": "1230 Main St, Patuakhali"
+}
+
+```
+
+- **Response:**
+
+```json
+{
+    "success": true,
+    "statuscode":200,
+    "message": "FLat data updated!",
+    "data": {
+        "id": "155edef1-f393-4a17-befe-ab9c418889cb",
+        "location": "1230 Main St, Patuakhali",
+        "description": "A lovely two-bedroom flat in the heart of the city. It offers a spacious living area, modern kitchen, and a beautiful view of the park.",
+        "rentAmount": 10,
+        "bedrooms": 3,
+        "amenities": [
+            "wifi",
+            "parking",
+            "pool",
+            "gym",
+            "air conditioning"
+        ],
+        "createdAt": "2024-06-04T09:00:13.074Z",
+        "updatedAt": "2024-06-23T19:59:12.402Z",
+        "userId": "05c9f3ca-f9a0-4541-ad9b-e648dac0c796"
+    }
+}
+```
+
+
+
 
 
 
