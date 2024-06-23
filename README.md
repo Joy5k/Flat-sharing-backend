@@ -197,7 +197,6 @@ after entering the email, the email will get a verification URL
         }
         .......
     ]
-}```
 
 
 
