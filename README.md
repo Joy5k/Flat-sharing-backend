@@ -174,7 +174,7 @@ after entering the email, the email will get a verification URL
 
 
 - **Response:**
-  ```json
+ ```json
   {
     "success": true,
     "message": "Users data fetched!",
@@ -197,8 +197,8 @@ after entering the email, the email will get a verification URL
         }
         .......
     ]
-
-
+}
+```
 
 
 
