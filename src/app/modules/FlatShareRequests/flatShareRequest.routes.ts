@@ -13,6 +13,10 @@ router.get('/getAllFlatRequest',
 auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
 FlatShareRequestController.getAllFlatRequestData
 )
+router.get('/getAllFlatRequestForAdmin',
+    auth(UserRole.ADMIN,UserRole.SUPER_ADMIN),
+    FlatShareRequestController.getAllFlatRequestDataForAdmin
+)
 router.get('/getSingleFlatRequest/:id',
 auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
 FlatShareRequestController.getSingleFlatRequestData

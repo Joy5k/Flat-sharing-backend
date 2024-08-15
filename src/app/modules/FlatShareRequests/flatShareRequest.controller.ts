@@ -39,6 +39,19 @@ const getAllFlatRequestData = catchAsync(
     });
   }
 );
+const getAllFlatRequestDataForAdmin = catchAsync(
+  async (req: Request, res: Response) => {
+    
+    const result = await FlatShareRequestServices.getAllFlatRequestDataForAdminFromDB();
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Flat Share Request retrieved successfully",
+      data: result,
+    });
+  }
+);
 const getSingleFlatRequestData = catchAsync(
   async (req: Request, res: Response) => {
     const { flatId } = req.params;
@@ -58,4 +71,5 @@ export const FlatShareRequestController = {
   createFlatRequest,
   getAllFlatRequestData,
   getSingleFlatRequestData,
+  getAllFlatRequestDataForAdmin
 };

@@ -19,7 +19,8 @@ const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const createFlatRequestIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const alreadyExistsFlatRequest = yield prisma_1.default.flatRequest.findFirst({
         where: {
-            flatId: payload.flatId
+            flatId: payload.flatId,
+            userId: payload.userId
         }
     });
     if (alreadyExistsFlatRequest) {
@@ -44,6 +45,15 @@ const getAllFlatRequestDataFromDB = (userId) => __awaiter(void 0, void 0, void 0
     });
     return result;
 });
+const getAllFlatRequestDataForAdminFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.flatRequest.findMany({
+        include: {
+            user: true,
+            flat: true,
+        },
+    });
+    return result;
+});
 const getSingleFlatRequestDataFromDB = (flatId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.default.flatRequest.findFirstOrThrow({
         where: {
@@ -57,5 +67,6 @@ const getSingleFlatRequestDataFromDB = (flatId) => __awaiter(void 0, void 0, voi
 exports.FlatShareRequestServices = {
     createFlatRequestIntoDB,
     getAllFlatRequestDataFromDB,
-    getSingleFlatRequestDataFromDB
+    getSingleFlatRequestDataFromDB,
+    getAllFlatRequestDataForAdminFromDB
 };

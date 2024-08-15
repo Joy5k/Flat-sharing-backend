@@ -7,7 +7,8 @@ const createFlatRequestIntoDB = async (payload: TFlatShareRequest) => {
  
     const alreadyExistsFlatRequest = await prisma.flatRequest.findFirst({
         where: {
-            flatId: payload.flatId
+            flatId: payload.flatId,
+            userId:payload.userId
         }
     })
     if (alreadyExistsFlatRequest) {
@@ -35,6 +36,15 @@ const getAllFlatRequestDataFromDB = async (userId:string) => {
     })
     return result
 }
+const getAllFlatRequestDataForAdminFromDB = async () => {
+    const result = await prisma.flatRequest.findMany({
+        include: {
+          user: true,   
+          flat: true, 
+        },
+      });
+    return result
+}
 
 const getSingleFlatRequestDataFromDB = async (flatId: string) => {
     const result = await prisma.flatRequest.findFirstOrThrow({
@@ -50,5 +60,6 @@ const getSingleFlatRequestDataFromDB = async (flatId: string) => {
 export const FlatShareRequestServices = {
     createFlatRequestIntoDB,
     getAllFlatRequestDataFromDB,
-    getSingleFlatRequestDataFromDB
+    getSingleFlatRequestDataFromDB,
+    getAllFlatRequestDataForAdminFromDB
 }

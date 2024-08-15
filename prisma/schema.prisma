@@ -23,6 +23,7 @@ model User {
   admin              Admin?
   flatRequests   FlatRequest[]
   flat          Flat[]
+  review Review []
 @@map("user")
 }
 model Admin {
@@ -52,6 +53,7 @@ model Flat {
 
   user          User      @relation(fields: [userId], references: [id])
   flatRequest       FlatRequest[]
+  review  Review[]
   @@map("flat")
 }
 model Photo {
@@ -71,7 +73,17 @@ model FlatRequest {
   flat           Flat      @relation(fields: [flatId], references: [id])
   @@map("flatRequest")
 }
-
+model Review {
+  id String @id @default(uuid())
+  userId String
+  flatId String
+  comment String?
+  start  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId],references: [id])
+  flat Flat @relation(fields: [flatId],references: [id])
+}
 
 
 

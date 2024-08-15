@@ -43,6 +43,15 @@ const getAllFlatRequestData = (0, catchAsync_1.default)((req, res) => __awaiter(
         data: result,
     });
 }));
+const getAllFlatRequestDataForAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield flatShareRequest_services_1.FlatShareRequestServices.getAllFlatRequestDataForAdminFromDB();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Flat Share Request retrieved successfully",
+        data: result,
+    });
+}));
 const getSingleFlatRequestData = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { flatId } = req.params;
     const result = yield flatShareRequest_services_1.FlatShareRequestServices.getSingleFlatRequestDataFromDB(flatId);
@@ -57,4 +66,5 @@ exports.FlatShareRequestController = {
     createFlatRequest,
     getAllFlatRequestData,
     getSingleFlatRequestData,
+    getAllFlatRequestDataForAdmin
 };

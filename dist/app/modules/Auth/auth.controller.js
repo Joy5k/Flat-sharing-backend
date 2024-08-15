@@ -23,7 +23,6 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
     res.cookie('refreshToken', refreshToken, {
         secure: true,
         httpOnly: true,
-        path: '/',
     });
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
