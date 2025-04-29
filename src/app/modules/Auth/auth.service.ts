@@ -20,7 +20,6 @@ const loginUser = async (payload: { email: string; password: string }) => {
     payload.password,
     userData.password
   );
-console.log(isCorrectPassword);
   if (!isCorrectPassword) {
    throw new ApiError(401,"Password incorrect!");
   }
@@ -43,7 +42,6 @@ console.log(isCorrectPassword);
     config.jwt.refresh_token_secret as Secret,
     config.jwt.refresh_token_expires_in as string
   );
-console.log(refreshToken);
   return {
     accessToken,
     refreshToken,
