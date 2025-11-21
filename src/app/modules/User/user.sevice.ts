@@ -42,28 +42,27 @@ const createAdmin = async (req: Request): Promise<Admin> => {
 };
 
 const createUser = async (req: Request): Promise<User> => {
+  console.log(req.body.user);
+
   const file = req.file as IFile;
 
   if (file) {
-    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-
-    req.body.user.profilePhoto = uploadToCloudinary?.secure_url;
+    const upload = await fileUploader.uploadToCloudinary(file);
+    req.body.user.profilePhoto = upload?.secure_url;
   }
 
-  const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
+  const hashedPassword = await bcrypt.hash(req.body.user.password, 12);
 
   const userData = {
     email: req.body.user.email,
     username: req.body.user.username,
-    profilePhoto: req?.body.user.profilePhoto,
+    profilePhoto: req.body.user.profilePhoto,
     password: hashedPassword,
     role: UserRole.USER,
   };
-  const result = await prisma.$transaction(async (transactionClient) => {
-    const createUserData = await transactionClient.user.create({
-      data: userData,
-    });
-    return createUserData;
+
+  const result = await prisma.user.create({
+    data: userData,
   });
 
   return result;

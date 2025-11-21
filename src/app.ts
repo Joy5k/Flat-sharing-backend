@@ -9,15 +9,14 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://spare-rooms-frontend.vercel.app'],
+    origin: ['http://localhost:3000',],
     credentials: true,
   }),
 );
 app.use((req, res, next) => {
   res.header(
     'Access-Control-Allow-Origin',
-    ['http://localhost:3000', 'https://spare-rooms-frontend.vercel.app'].join(',')
-  );
+    'http://localhost:3000',);
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();

@@ -1,38 +1,11 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "RequestStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 
-  - You are about to drop the `Admin` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Flat` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `FlatRequest` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('SUPER_ADMIN', 'ADMIN', 'SELLER', 'USER');
 
-*/
--- DropForeignKey
-ALTER TABLE "Admin" DROP CONSTRAINT "Admin_email_fkey";
-
--- DropForeignKey
-ALTER TABLE "Flat" DROP CONSTRAINT "Flat_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "FlatRequest" DROP CONSTRAINT "FlatRequest_flatId_fkey";
-
--- DropForeignKey
-ALTER TABLE "FlatRequest" DROP CONSTRAINT "FlatRequest_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Photo" DROP CONSTRAINT "Photo_flatId_fkey";
-
--- DropTable
-DROP TABLE "Admin";
-
--- DropTable
-DROP TABLE "Flat";
-
--- DropTable
-DROP TABLE "FlatRequest";
-
--- DropTable
-DROP TABLE "User";
+-- CreateEnum
+CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'BLOCKED', 'DELETED');
 
 -- CreateTable
 CREATE TABLE "user" (
@@ -80,6 +53,15 @@ CREATE TABLE "flat" (
 );
 
 -- CreateTable
+CREATE TABLE "Photo" (
+    "id" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
+    "flatId" TEXT NOT NULL,
+
+    CONSTRAINT "Photo_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "flatRequest" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -89,6 +71,19 @@ CREATE TABLE "flatRequest" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "flatRequest_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Review" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "flatId" TEXT NOT NULL,
+    "comment" TEXT,
+    "start" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -111,3 +106,9 @@ ALTER TABLE "flatRequest" ADD CONSTRAINT "flatRequest_userId_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "flatRequest" ADD CONSTRAINT "flatRequest_flatId_fkey" FOREIGN KEY ("flatId") REFERENCES "flat"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_flatId_fkey" FOREIGN KEY ("flatId") REFERENCES "flat"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

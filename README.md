@@ -32,7 +32,36 @@ connect the project with database in env file
 node
 require('crypto').randomBytes(64).toString('hex')
 ```
-##Authentication 
+
+### Connecting to Supabase
+
+To connect your application to Supabase, follow these steps:
+
+1. Create a Supabase account at [supabase.com](https://supabase.com)
+2. Create a new project in your Supabase dashboard
+3. Update your `.env` file with the correct connection details:
+
+```env
+DATABASE_URL="postgresql://postgres:[YOUR_SUPABASE_PASSWORD]@db.[YOUR_PROJECT_REF].supabase.co:5432/postgres"
+DIRECT_URL="postgresql://postgres:[YOUR_SUPABASE_PASSWORD]@db.[YOUR_PROJECT_REF].supabase.co:5432/postgres"
+```
+
+Replace:
+- `[YOUR_SUPABASE_PASSWORD]` with the database password from your Supabase dashboard
+- `[YOUR_PROJECT_REF]` with your unique project reference (you can find this in the connection string on your Supabase dashboard)
+
+4. After updating your `.env` file, generate the Prisma client:
+
+```bash
+npx prisma generate
+```
+
+5. Push your schema to Supabase:
+
+```bash
+npx prisma db push
+```
+##Authentication
 ### **1. User Registration**
 
 - **Endpoint:** **`POST /user/create-user`**
@@ -125,7 +154,7 @@ require('crypto').randomBytes(64).toString('hex')
 after entering the email, the email will get a verification URL
 
 - **Response**
-- 
+-
 ```json
 {
     "success": true,
@@ -147,7 +176,7 @@ after entering the email, the email will get a verification URL
 ```
 
 - **Response**
-- 
+-
 ```json
 {
     "success": true,
@@ -246,7 +275,7 @@ after entering the email, the email will get a verification URL
 }
 ```
 - **Response:**
-  
+
 ```json
 {
     "success": true,
@@ -279,7 +308,7 @@ after entering the email, the email will get a verification URL
   "rentAmount": 1200.0,
   "bedrooms": 2,
   "amenities": ["Wi-Fi", "Air Conditioning", "Heating", "Washer/Dryer"],
-  
+
     "photos": [
       {
         "id": "c1d1e1f1-1111-1111-1111-111111111111",
@@ -290,7 +319,7 @@ after entering the email, the email will get a verification URL
         "imageUrl": "https://example.com/photo2.jpg"
       }
     ]
-  
+
 }
 
 ```
@@ -557,7 +586,7 @@ after entering the email, the email will get a verification URL
 
 
 
-If you want to use my API then you might be got the error 
+If you want to use my API then you might be got the error
 ```json
 {
     "success": false,
