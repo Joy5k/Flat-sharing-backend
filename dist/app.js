@@ -11,9 +11,15 @@ const globalErrorHandler_1 = __importDefault(require("./app/middlewares/globalEr
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: ['http://localhost:3000', 'https://spare-rooms-frontend.vercel.app'],
+    origin: ['http://localhost:3000',],
     credentials: true,
 }));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 app.use((0, cookie_parser_1.default)());
 // Parser
 app.use(express_1.default.json());

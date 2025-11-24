@@ -79,25 +79,23 @@ const createAdmin = (req) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const createUser = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body.user);
     const file = req.file;
     if (file) {
-        const uploadToCloudinary = yield fileUploader_1.fileUploader.uploadToCloudinary(file);
-        req.body.user.profilePhoto = uploadToCloudinary === null || uploadToCloudinary === void 0 ? void 0 : uploadToCloudinary.secure_url;
+        const upload = yield fileUploader_1.fileUploader.uploadToCloudinary(file);
+        req.body.user.profilePhoto = upload === null || upload === void 0 ? void 0 : upload.secure_url;
     }
-    const hashedPassword = yield bcrypt.hash(req.body.password, 12);
+    const hashedPassword = yield bcrypt.hash(req.body.user.password, 12);
     const userData = {
         email: req.body.user.email,
         username: req.body.user.username,
-        profilePhoto: req === null || req === void 0 ? void 0 : req.body.user.profilePhoto,
+        profilePhoto: req.body.user.profilePhoto,
         password: hashedPassword,
         role: client_1.UserRole.USER,
     };
-    const result = yield prisma_1.default.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
-        const createUserData = yield transactionClient.user.create({
-            data: userData,
-        });
-        return createUserData;
-    }));
+    const result = yield prisma_1.default.user.create({
+        data: userData,
+    });
     return result;
 });
 const getAllFromDB = (params, options) => __awaiter(void 0, void 0, void 0, function* () {

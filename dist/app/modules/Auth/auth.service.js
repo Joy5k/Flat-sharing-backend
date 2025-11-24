@@ -52,7 +52,6 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         },
     });
     const isCorrectPassword = yield bcrypt.compare(payload.password, userData.password);
-    console.log(isCorrectPassword);
     if (!isCorrectPassword) {
         throw new ApiError_1.default(401, "Password incorrect!");
     }
@@ -66,7 +65,6 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         role: userData.role,
         userId: userData.id
     }, config_1.default.jwt.refresh_token_secret, config_1.default.jwt.refresh_token_expires_in);
-    console.log(refreshToken);
     return {
         accessToken,
         refreshToken,
