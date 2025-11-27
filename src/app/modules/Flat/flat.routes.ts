@@ -23,6 +23,10 @@ router.post(
 router.get('/get-all-flats',
   FlatController.getFlats
 )
+router.get('/get-all-flats-by-super-admin',
+  auth(UserRole.SUPER_ADMIN),
+  FlatController.getAllFlatsBySuperAdmin
+)
 router.get('/get-my-flats',
   auth(UserRole.ADMIN, UserRole.USER, UserRole.SELLER, UserRole.SUPER_ADMIN),
   FlatController.getFlats
@@ -41,6 +45,16 @@ router.patch("/updateFLat/:id",
 router.patch("/updateMyFLat/:id",
   auth(UserRole.ADMIN, UserRole.SUPER_ADMIN,UserRole.USER,UserRole.SELLER),
   FlatController.updateMyFlat
+)
+
+router.put("/activeFlat/:id",
+  auth(UserRole.SUPER_ADMIN),
+  FlatController.activeFlat
+)
+
+router.put("/retriveDeletedFlat/:id",
+  auth(UserRole.SUPER_ADMIN),
+  FlatController.retriveDeletedFlat
 )
 
 router.delete("/deleteFlat/:id",

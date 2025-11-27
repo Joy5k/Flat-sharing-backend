@@ -54,7 +54,7 @@ const getFlatsFromDB = async (
 ) => {
   const { limit,page, skip } = paginationHelper.calculatePagination(options);
   const { location, priceMin, priceMax, bedrooms } = filters;
-  const andConditions: Prisma.FlatWhereInput[] = [];
+  const andConditions: Prisma.FlatWhereInput[] = [{isActive:true},{isDeleted:false}];
 
   // Filter by user role
   if (user?.role === UserRole.USER || user?.role === UserRole.ADMIN) {
@@ -133,10 +133,98 @@ const getFlatsFromDB = async (
   };
 };
 
+// get all flats for super admin 
+const getFlatsBySuperAdminFromDB = async (
+  user: IAuthUser,
+  filters:any,
+  options: IPaginationOptions & { location?: string; priceMin?: number; priceMax?: number; bedrooms?: number }
+) => {
+  const { limit,page, skip } = paginationHelper.calculatePagination(options);
+  const { location, priceMin, priceMax, bedrooms } = filters;
+  const andConditions: Prisma.FlatWhereInput[] = [];
+
+  // Filter by user role
+  if (user?.role === UserRole.USER || user?.role === UserRole.ADMIN) {
+    andConditions.push({
+      user: {
+        email: user?.email,
+      },
+    });
+  }
+
+  // Filter by location
+  if (location) {
+    andConditions.push({
+      location: {
+        contains: location,
+        mode: 'insensitive', // Case-insensitive search
+      },
+    });
+  }
+
+  // Filter by price range
+  if (priceMin !== undefined || priceMax !== undefined) {
+    andConditions.push({
+      rentAmount: {
+        gte: Number(priceMin),
+        lte: Number(priceMax),
+      },
+    });
+  }
+
+  // Filter by number of bedrooms
+  if (bedrooms) {
+    andConditions.push({
+      bedrooms: Number(bedrooms),
+    });
+  }
+
+  const whereConditions: Prisma.FlatWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const result = await prisma.flat.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy: options.sortBy && options.sortOrder
+      ? { [options.sortBy]: options.sortOrder }
+      : { createdAt: 'desc' },
+    include: {
+      photos: true,
+      user: {
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          profilePhoto: true,
+          role: true,
+          needPasswordChange: true,
+          status: true,
+         
+        },
+      },
+    },
+  });
+
+  const total = await prisma.flat.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  };
+};
 const getMyFlatsFromDB = async (userId: string) => {
   const result = await prisma.flat.findMany({
     where: {
-      userId
+      userId,
+      isDeleted: false,
+      isActive:true
     }
   })
   return result
@@ -147,7 +235,9 @@ const getSingleFlatFromDB = async (id: string) => {
 
   const result = await prisma.flat.findFirstOrThrow({
     where: {
-      id
+      id,
+       isActive: true,
+      isDeleted: false,
     },
     select: {
       id: true,
@@ -158,6 +248,7 @@ const getSingleFlatFromDB = async (id: string) => {
       bedrooms: true,
       amenities: true,
       userId: true,
+     
       createdAt: true,
       updatedAt: true
     }
@@ -192,21 +283,42 @@ const updateMyFlatDataIntoDB = async (id: string,userId:string, payload: any) =>
     data: payload
   })
   return result
+} 
+
+
+// Active deactivated flat by super admin
+const acivateFlatIntoDB = async (id: string) => {
+  const result = await prisma.flat.update({
+    where: { id },
+    data: {
+      isActive: true,
+    },
+  });
+  return result;
+}
+
+// Retrive Deleted flat by super admin
+const retriveDeletedFlatBySuperAdminFromDB = async (id: string) => {
+  const result = await prisma.flat.update({
+    where: { id },
+    data: {
+      isDeleted: false,
+    },
+  });
+  return result;
 }
 
 const deleteFlatFromDB = async (id: string) => {
 
   return await prisma.$transaction(async transactionClient => {
-    const deleteFlat = await transactionClient.photo.deleteMany({
-        where: {
-            flatId:id,
-        },
-    });
-
-    await transactionClient.flat.delete({
+    const deleteFlat =  await transactionClient.flat.updateMany({
         where: {
           id
         },
+        data:{
+          isDeleted:true,
+          isActive:false
+        }
     });
 
     return deleteFlat;
@@ -218,9 +330,12 @@ const deleteFlatFromDB = async (id: string) => {
 export const FlatServices = {
   createFlatIntoDB,
   getFlatsFromDB,
+  getFlatsBySuperAdminFromDB,
   getMyFlatsFromDB,
   getSingleFlatFromDB,
   updateFlatDataIntoDB,
   updateMyFlatDataIntoDB,
+  acivateFlatIntoDB,
+  retriveDeletedFlatBySuperAdminFromDB,
   deleteFlatFromDB
 };

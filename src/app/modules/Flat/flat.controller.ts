@@ -15,6 +15,22 @@ const createFlat = catchAsync(async (req: Request, res: Response) => {
         data: result
     })
 })
+const getAllFlatsBySuperAdmin = catchAsync(async (req: Request, res: Response) => {
+    
+    const user=req.user as any
+    const filters = pick(req.query, flatFilterableFields)
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = await FlatServices.getFlatsBySuperAdminFromDB(user,filters,options);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Flats retrieval successfully',
+        meta: result.meta,
+        data: result.data,
+    });
+})
+
+
 const getFlats = catchAsync(async (req: Request, res: Response) => {
     
     const user=req.user as any
@@ -76,6 +92,28 @@ const updateMyFlat = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+// activate all deactivated flat by super admin
+const activeFlat=catchAsync(async(req:Request,res:Response)=>{
+    const {id}=req.params;
+    const result=await FlatServices.acivateFlatIntoDB(id);
+    sendResponse(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"Flat activated successfully",
+        data:result
+    })
+})
+// retrive deleted flat by super admin
+const retriveDeletedFlat=catchAsync(async(req:Request,res:Response)=>{
+    const {id}=req.params
+    const result=await FlatServices.retriveDeletedFlatBySuperAdminFromDB(id);
+    sendResponse(res,{
+        statusCode:httpStatus.OK,
+        success:true,
+        message:"Flat retrived successfully",
+        data:result
+    })
+})
 const deleteFlat = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
     const result = await FlatServices.deleteFlatFromDB(id)
@@ -93,10 +131,13 @@ const deleteFlat = catchAsync(async (req: Request, res: Response) => {
 export const FlatController = {
     createFlat,
     getFlats,
+    getAllFlatsBySuperAdmin,
     getMyFlats,
     getSingleFlat,
     updateFlat,
     updateMyFlat,
+    activeFlat,
+    retriveDeletedFlat,
     deleteFlat
 
 }
